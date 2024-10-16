@@ -1,0 +1,17 @@
+:root{
+  --clr-bg-primary: whiteSmoke;
+  --clr-text-primary: black;
+}
+
+
+.light{
+  --clr-bg-primary: whiteSmoke;
+  --clr-text-primary: black;
+}
+
+.dark{
+  --clr-bg-primary: #333;
+  --clr-text-primary: whiteSmoke;
+}
+
+
