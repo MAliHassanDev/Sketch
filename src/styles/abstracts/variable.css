@@ -1,17 +1,19 @@
 :root{
-  --clr-bg-primary: whiteSmoke;
+  --clr-bg-canvas-primary: #F2F2F2;
   --clr-text-primary: black;
+  --clr-tool-button-hover: rgb(217, 223, 252);
+  --clr-tool-stack: #ffffff;
 }
 
 
 .light{
-  --clr-bg-primary: whiteSmoke;
+  --clr-bg-canvas-primary: #F2F2F2;
   --clr-text-primary: black;
 }
 
 .dark{
-  --clr-bg-primary: #333;
-  --clr-text-primary: whiteSmoke;
+  --clr-bg-canvas-primary: #333;
+  --clr-text-primary: #F2F2F2;
 }
 
 

@@ -1,0 +1,5 @@
+
+.canvas{
+  background-color: var(--clr-bg-canvas-primary);
+  color: var(--clr-text-primary);
+}
