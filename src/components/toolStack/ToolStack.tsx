@@ -1,6 +1,6 @@
 import ToolButton from '@/components/toolButton/ToolButton';
 import styles from "./ToolStack.module.css";
-import { Tool } from '@/app/App';
+import { Tool } from '@/app/tools';
 
 
 type ToolStackProps = {

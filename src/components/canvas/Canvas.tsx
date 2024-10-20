@@ -4,9 +4,15 @@ import {
   ThemeContext,
   ThemeContextType,
 } from "@/components/ThemeProvider/ThemeProvider";
+import { CanvasTool, HandDrawTool} from "@/app/tools";
 
 
-const Canvas = () => {
+
+type CanvasProps = {
+  activeTool: CanvasTool
+}
+
+const Canvas = ({activeTool}:CanvasProps) => {
   const { theme } = useContext(ThemeContext) as ThemeContextType;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -28,31 +34,43 @@ const Canvas = () => {
 
 
   useEffect(() => {
-    initCanvas();
+    switch (activeTool.category) {
+      case "handDraw":
+        setUpHandDrawTool(activeTool);
+        break;
+      case "select":
+        setUpSelectTool();  
+    }
   },[startMouseCords]);
 
+  function setUpSelectTool() {
+    
+  }
   
-  function initCanvas() {
+  function setUpHandDrawTool(tool:HandDrawTool) {
     const ctx = contextRef.current;
     if (!ctx) throw new Error("Canvas rendering context is undefined");
     ctx.beginPath();
     ctx.moveTo(...startMouseCords);
-    ctx.strokeStyle = theme == "dark" ? "white": "black";
-    ctx.lineWidth = 10;
+    ctx.strokeStyle = tool.strokeStyle;
+    ctx.lineCap = tool.lineCap;
+    ctx.lineWidth = tool.lineWidth;
   }
 
-
+  // TODO Move the logic os assigning rendering based on category in function Or switch 
   function handleMouseMove(e: MouseEvent<HTMLCanvasElement>) {
     if (!isMouseDown) return;
     const ctx = contextRef.current;
-    ctx?.lineTo(e.clientX, e.clientY);
-    ctx?.stroke();
+    if (activeTool.category == "handDraw") {
+      ctx?.lineTo(e.clientX, e.clientY);
+      ctx?.stroke();
+    }
   }
 
   function handleMouseDown(e:MouseEvent<HTMLCanvasElement>) {
     setIsMouseDown(true);
     setStartMouseCords([e.clientX, e.clientY],);
-    
+  
   }
 
   function handleMouseUp() {

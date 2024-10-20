@@ -1,5 +1,5 @@
 import styles from "./ToolButton.module.css";
-import { Tool } from "@/app/App";
+import { Tool } from "@/app/tools";
 
 interface ToolButtonProps{
   onClick: (name:string) => void;
