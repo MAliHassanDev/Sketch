@@ -1,38 +1,25 @@
-import ToolButton from '@/components/toolButton/ToolButton';
+import ToolButton from "@/components/toolButton/ToolButton";
 import styles from "./ToolStack.module.css";
-import { Tool } from '@/app/tools';
-
+import { CanvasTool, subTool } from "@/app/tools";
 
 type ToolStackProps = {
-  tools: Tool[],
+  tools: Array<CanvasTool | subTool>;
   onToolBtnClick: (name: string) => void;
-}
+};
 
-const ToolStack = ({
-  tools,
-  onToolBtnClick,
-}: ToolStackProps) => {
-  
-
-  const iconsList = tools.map((tool: Tool, index: number) => {
-    return <li key={index}>
-      <ToolButton
-        onClick={onToolBtnClick}
-        tool={tool}
-      />
-    </li>;
+const ToolStack = ({ tools, onToolBtnClick }: ToolStackProps) => {
+    const toolsList = tools.map((tool, index: number) => {
+    return (
+      <li key={index}>
+        <ToolButton onClick={onToolBtnClick} tool={tool} />
+      </li>
+    );
   });
-
-
-
   return (
     <div className={styles.toolStack}>
-      <ul>
-        {iconsList}
-      </ul>
+      <ul>{toolsList}</ul>
     </div>
   );
 };
-
 
 export default ToolStack;

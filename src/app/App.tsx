@@ -1,9 +1,10 @@
 import styles from "./App.module.css";
-import { act, useContext, useState } from "react";
+import {  useContext, useState } from "react";
 import { ThemeContext, ThemeContextType } from "@/components/ThemeProvider/ThemeProvider";
 import Canvas from "@/components/canvas/Canvas";
-import ToolStack from "@/components/toolStack/ToolStack";
 import { getTools, Tool } from "./tools";
+import { getActiveTool } from "@/utils/canvasUtils";
+import ToolBar from '../components/toolBar/ToolBar';
 
 
 
@@ -22,20 +23,20 @@ const App = () => {
     setToolsStatus(updateTargetToolStatus());
   }
 
-  function getActiveTool() {
-    const activeTool = toolsStatus.find(tool => tool.active);
-    if (!activeTool) throw new Error("All canvas tool are inactive");
-    return activeTool;
+  function handleSubToolBtnClick(toolName: string) {
+    
   }
-  // TODO Only send Basic Tool properties to ToolStack prop
+
+
   return (
     <div className={`${styles.app} ${theme}`} data-testid="app">
-      <ToolStack
+      <ToolBar 
         tools={toolsStatus}
         onToolBtnClick={handleToolBtnClick}
+        onSubToolBtnClick={handleSubToolBtnClick}
       />
-      <Canvas activeTool={getActiveTool()} />
-    </div>
+      <Canvas activeTool={getActiveTool(toolsStatus)} />
+    </div> 
   );
 };
 
