@@ -1,5 +1,5 @@
 type HandDrawToolName = "pen" | "eraser" | "highlighter";
-type subToolNames = "colorPicker"
+type subToolNames = "colorPreset"
 type SelectToolName = "select";
 type Cursor = string;
 type PrimitiveOrArray =
@@ -12,13 +12,13 @@ type Image = {
   alt: string;
 };
 
-type ColorPicker  = {
+type ColorPreset  = {
   colors: string[];
   selectedColor: string
   thickness: number;
 };
 
-type subToolExtra = ColorPicker;
+type subToolExtra = ColorPreset;
 
 export interface Tool {
   name: SelectToolName | HandDrawToolName | subToolNames;
