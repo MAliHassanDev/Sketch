@@ -1,24 +1,20 @@
 import { MouseEvent, useContext, useEffect, useRef, useState } from "react";
 import styles from "./Canvas.module.css";
-import {
-  ThemeContext,
-  ThemeContextType,
-} from "@/components/ThemeProvider/ThemeProvider";
-import { CanvasTool, HandDrawTool } from "@/app/tools";
+import { getActiveTool, HandDrawTool } from "@/app/tools";
+import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
+import ThemeContext, { ThemeContextType } from "@/contexts/themeContext";
 
-type CanvasProps = {
-  activeTool: CanvasTool;
-};
 type MouseCords = [number, number];
 
-const Canvas = ({ activeTool }: CanvasProps) => {
+const Canvas = () => {
+  const { tools } = useContext(ToolsContext) as ToolsContextType;
+  const activeTool = getActiveTool(tools);
   const { theme } = useContext(ThemeContext) as ThemeContextType;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const currMouseCordsRef = useRef<MouseCords>([0, 0]);
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
   const [startMouseCords, setStartMouseCords] = useState<MouseCords>([0, 0]);
-
   useEffect(() => {
     if (!canvasRef.current) {
       throw new Error("Html canvas is undefined");
@@ -56,7 +52,7 @@ const Canvas = ({ activeTool }: CanvasProps) => {
     currMouseCordsRef.current = [e.clientX, e.clientY];
     const ctx = contextRef.current;
     if (activeTool.category == "handDraw") {
-      if(activeTool.name === "eraser") e.clientY+= activeTool.lineWidth;
+      if (activeTool.name === "eraser") e.clientY += activeTool.lineWidth;
       ctx?.lineTo(e.clientX, e.clientY);
       ctx?.stroke();
     }
@@ -67,7 +63,7 @@ const Canvas = ({ activeTool }: CanvasProps) => {
     setStartMouseCords([e.clientX, e.clientY]);
   }
 
-  function handleMouseUp(e:MouseEvent) {
+  function handleMouseUp(e: MouseEvent) {
     e.preventDefault();
     setIsMouseDown(false);
   }

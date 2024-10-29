@@ -9,7 +9,9 @@ export default defineConfig({
       "@/app": "/src/app",
       "@/components": "/src/components",
       "@/assets": "/src/assets",
-      "@/utils": "/src/utils"
+      "@/utils": "/src/utils",
+      "@/contexts": "/src/contexts",
+      "@/features": "/src/features"
     },
   },
 });

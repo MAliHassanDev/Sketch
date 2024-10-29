@@ -1,6 +1,6 @@
-import { screen,render } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import Canvas from "./Canvas";
-import { ThemeProvider } from "../ThemeProvider/ThemeProvider";
+import { ThemeProvider } from "../../components/ThemeProvider/ThemeProvider";
 describe("Canvas", () => {
   test("Should render with correct width and height", () => {
     render(

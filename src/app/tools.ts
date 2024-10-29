@@ -1,5 +1,5 @@
+// Tools
 type HandDrawToolName = "pen" | "eraser" | "highlighter";
-type subToolNames = "colorPreset"
 type SelectToolName = "select";
 type Cursor = string;
 type PrimitiveOrArray =
@@ -7,31 +7,17 @@ type PrimitiveOrArray =
   | number
   | boolean
   | Array<string | number | boolean>;
-type Image = {
+export type ToolIcon = {
   src: string;
-  alt: string;
+  description: string;
 };
-
-type ColorPreset  = {
-  colors: string[];
-  selectedColor: string
-  thickness: number;
-};
-
-type subToolExtra = ColorPreset;
 
 export interface Tool {
   name: SelectToolName | HandDrawToolName | subToolNames;
-  image?: Image;
+  icon?: ToolIcon;
   active: boolean;
   cursor: Cursor;
-  subTools?: subTool[];
 }
-
-export interface subTool
-  extends Omit<Tool,"subTools">,subToolExtra {
-  type: "subTool";
-} 
 
 export interface HandDrawTool extends Tool {
   name: HandDrawToolName;
@@ -39,63 +25,98 @@ export interface HandDrawTool extends Tool {
   lineCap: "round" | "butt" | "square";
   lineWidth: number;
   strokeStyle: string;
-  type: "tool"
 }
 
 export interface SelectTool extends Tool {
   category: "select";
-  type: "tool"
   name: SelectToolName;
 }
 
-export type CanvasTool = HandDrawTool | SelectTool;
+// subTool
+type subToolNames = "colorPreset";
+export interface IColorPreset extends Tool {
+  name: "colorPreset";
+  colorPalette: {
+    colors: string[];
+    selectedColor: string;
+    thickness: number;
+    active: boolean;
+  };
+}
+export type subTool = IColorPreset;
 
-export function getTools(): Array<HandDrawTool | SelectTool> {
+// Pen
+type PenSubTool = {
+  colorPreset: IColorPreset;
+};
+export interface IPen extends HandDrawTool {
+  subTool: PenSubTool;
+}
+
+// eraser
+export interface IEraser extends HandDrawTool {
+  radius: number;
+}
+
+export type CanvasTool = IPen | IEraser | SelectTool;
+export type CanvasToolName = HandDrawToolName | SelectToolName;
+//  util functions
+export function getTools(): Array<CanvasTool> {
   const handDrawTools = createHandDrawTools();
   const selectTolls = createSelectTools();
   return [...selectTolls, ...handDrawTools];
 }
 
+export function getActiveTool(tools: CanvasTool[]) {
+  const activeTools = tools.filter((tool) => tool.active);
+  if (activeTools.length > 1) throw new Error("More than one tools are active");
+  if (activeTools.length === 0)
+    throw new Error("No Canvas tool is currently active");
+  return activeTools[0];
+}
+
+// tools config
 function createHandDrawTools() {
-  const pen: HandDrawTool = {
+  const pen: IPen = {
     name: "pen",
-    image: {
+    icon: {
       src: "/src/assets/icons/pencil.svg",
-      alt: "pen",
+      description: "pen",
     },
-    type: "tool",
     category: "handDraw",
     active: true,
-    subTools: [
-      {
-        name: "colorPicker",
+    subTool: {
+      colorPreset: {
+        name: "colorPreset",
         active: true,
-        type: "subTool",
-        colors: ["black"],
-        selectedColor: "black",
         cursor: "default",
-        thickness: 5,
+        colorPalette: {
+          active: false,
+          colors: ["black"],
+          selectedColor: "black",
+          thickness: 5,
+        },
       },
-    ],
+    },
     lineWidth: 5,
     lineCap: "round",
     strokeStyle: "black",
     cursor: "crosshair",
   };
 
-  const eraser: HandDrawTool = {
+  const eraser: IEraser = {
     name: "eraser",
-    image: {
+    icon: {
       src: "/src/assets/icons/e.svg",
-      alt: "eraser",
+      description: "eraser",
     },
     cursor: `url("src/assets/icons/eraserCursor.png"),default`,
     category: "handDraw",
     active: false,
-    type: "tool",
     lineWidth: 20,
     lineCap: "round",
     strokeStyle: "#F2F2F2",
+    radius: 1,
   };
 
   return [pen, eraser];
@@ -104,16 +125,13 @@ function createHandDrawTools() {
 function createSelectTools() {
   const select: SelectTool = {
     name: "select",
-    image: {
+    icon: {
       src: "/src/assets/icons/cursor.svg",
-      alt: "select",
+      description: "select",
     },
     category: "select",
-    type: "tool",
     active: false,
     cursor: "default",
   };
-
   return [select];
 }
-

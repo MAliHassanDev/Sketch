@@ -1,44 +1,21 @@
 import styles from "./App.module.css";
-import {  useContext, useState } from "react";
-import { ThemeContext, ThemeContextType } from "@/components/ThemeProvider/ThemeProvider";
-import Canvas from "@/components/canvas/Canvas";
-import { getTools, Tool } from "./tools";
-import { getActiveTool } from "@/utils/canvasUtils";
-import ToolBar from '../components/toolBar/ToolBar';
-
-
+import { useContext } from "react";
+import Canvas from "@/features/canvas/Canvas";
+import ToolsPanel from "@/features/toolsPanel/ToolPanel";
+import ToolsProvider from "@/components/toolsProvider/ToolsProvider";
+import ThemeContext, { ThemeContextType } from "@/contexts/themeContext";
 
 const App = () => {
-  const tools = getTools();
-  const {theme} = useContext(ThemeContext) as ThemeContextType;
-  const [toolsStatus,setToolsStatus] = useState(tools);
-
-  function handleToolBtnClick(toolName:string){
-    function updateTargetToolStatus() {
-      return toolsStatus.map(tool => {
-        tool.active = tool.name === toolName;
-        return tool;
-      });
-    }
-    setToolsStatus(updateTargetToolStatus());
-  }
-
-  function handleSubToolBtnClick(toolName: string) {
-    
-  }
-
+  const { theme } = useContext(ThemeContext) as ThemeContextType;
 
   return (
-    <div className={`${styles.app} ${theme}`} data-testid="app">
-      <ToolBar 
-        tools={toolsStatus}
-        onToolBtnClick={handleToolBtnClick}
-        onSubToolBtnClick={handleSubToolBtnClick}
-      />
-      <Canvas activeTool={getActiveTool(toolsStatus)} />
-    </div> 
+    <div className={`${styles.app} ${theme}`} data-testid='app'>
+      <ToolsProvider>
+        <ToolsPanel />
+        <Canvas />
+      </ToolsProvider>
+    </div>
   );
 };
-
 
 export default App;
