@@ -2,7 +2,7 @@
 
 
 .app{
-  background-color: var(--clr-bg-primary);
+  background-color: var(--clr-bg-canvas-primary);
   color: var(--clr-text-primary);
   min-height: 100svh;
   display: flex;
