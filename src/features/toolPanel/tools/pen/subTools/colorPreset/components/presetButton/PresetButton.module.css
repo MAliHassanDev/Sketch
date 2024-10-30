@@ -1,0 +1,11 @@
+
+
+
+.presetButton{
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid;
+  border-color: var(--clr-tool-border-primary);
+}

@@ -88,12 +88,12 @@ function createHandDrawTools() {
     subTool: {
       colorPreset: {
         name: "colorPreset",
-        active: true,
+        active: false,
         cursor: "default",
         colorPalette: {
           active: false,
-          colors: ["black"],
-          selectedColor: "black",
+          colors: ["#1a1a1a","#fac710","#f24726","#e6e6e6","#cee741","#8fd14f","#da0063","#808080","#12cdd4","#0ca789","#9510ac","#2d9bf0"],
+          selectedColor: "#1a1a1a",
           thickness: 5,
         },
       },

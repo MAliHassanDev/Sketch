@@ -2,7 +2,7 @@
   padding: .4rem;
   background-color: var(--clr-tool-stack);
   border-radius: .4rem; 
-
+  box-shadow: var(--box-shadow-tool-stack);  
   & > *:not(:last-child){
     padding-bottom: .4rem;
   }

@@ -1,17 +1,23 @@
 import { useContext } from "react";
 import ToolButton from "../../components/toolButton/ToolButton";
-import ToolStack from "../../components/toolStack/ToolStack";
-import ColorPreset from "./components/colorPreset/ColorPreset";
+import ColorPreset from "./subTools/colorPreset/ColorPreset";
 import { IColorPreset, IPen } from "@/app/tools";
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
 import { getToolByName } from "@/utils/canvasToolUtils";
+import SubToolPanel from "../../components/subToolPanel/SubToolPanel";
+import styles from "./Pen.module.css";
 
 const Pen = () => {
   const { tools, updateTools } = useContext(ToolsContext) as ToolsContextType;
   const pen = getToolByName("pen", tools) as IPen;
 
   function handlePresetChange(preset: IColorPreset) {
-    updateTools({ ...pen, ...{ subTool: { colorPreset: preset } } });
+    const { colorPalette } = preset;
+    const updatedPenState: IPen = Object.assign({}, pen, {
+      strokeStyle: colorPalette.selectedColor,
+      subTool: { colorPreset: preset },
+    });
+    updateTools(updatedPenState);
   }
 
   function handleToolBtnClick() {
@@ -19,7 +25,7 @@ const Pen = () => {
   }
 
   return (
-    <div>
+    <div className={styles.pen}>
       <ToolButton
         onClick={handleToolBtnClick}
         icon={pen.icon}
@@ -27,12 +33,12 @@ const Pen = () => {
       />
 
       {pen.active && (
-        <ToolStack>
+        <SubToolPanel>
           <ColorPreset
             colorPreset={pen.subTool.colorPreset}
             onPresetChange={handlePresetChange}
           />
-        </ToolStack>
+        </SubToolPanel>
       )}
     </div>
   );
