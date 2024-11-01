@@ -1,0 +1,28 @@
+.colorButton{
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.active{
+    border: 1px solid var(--clr-tool-border-primary);
+  }
+
+  &:hover{
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px 5px rgb(0, 0, 0,0.08);
+  }
+}
+
+/* TODO dynamically set right position using ClientRect(by adding element width and .8rem gap */
+.colorPalette{
+  & .colorsList{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 1rem;
+  }
+}

@@ -1,5 +1,5 @@
 import ToolStack from "@/features/toolPanel/components/toolStack/ToolStack";
-import { ReactNode } from "react";
+import { ReactNode, useRef, JSX, useEffect } from 'react';
 import styles from "./SubToolPanel.module.css";
 
 type subToolPanelProps = {
@@ -8,7 +8,7 @@ type subToolPanelProps = {
 
 const SubToolPanel = ({ children }: subToolPanelProps) => {
   return (
-    <div className={styles.subToolPanel}>
+    <div className={styles.subToolPanel} >
       <ToolStack>{children}</ToolStack>
     </div>
   );

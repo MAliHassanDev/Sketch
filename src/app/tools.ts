@@ -34,14 +34,15 @@ export interface SelectTool extends Tool {
 
 // subTool
 type subToolNames = "colorPreset";
+export interface IColorPalette {
+  colors: string[];
+  selectedColor: string;
+  thickness: number;
+  active: boolean;
+}
 export interface IColorPreset extends Tool {
   name: "colorPreset";
-  colorPalette: {
-    colors: string[];
-    selectedColor: string;
-    thickness: number;
-    active: boolean;
-  };
+  colorPalette: IColorPalette;
 }
 export type subTool = IColorPreset;
 
@@ -92,7 +93,20 @@ function createHandDrawTools() {
         cursor: "default",
         colorPalette: {
           active: false,
-          colors: ["#1a1a1a","#fac710","#f24726","#e6e6e6","#cee741","#8fd14f","#da0063","#808080","#12cdd4","#0ca789","#9510ac","#2d9bf0"],
+          colors: [
+            "#1a1a1a",
+            "#fac710",
+            "#f24726",
+            "#e6e6e6",
+            "#cee741",
+            "#8fd14f",
+            "#da0063",
+            "#808080",
+            "#12cdd4",
+            "#0ca789",
+            "#9510ac",
+            "#2d9bf0",
+          ],
           selectedColor: "#1a1a1a",
           thickness: 5,
         },

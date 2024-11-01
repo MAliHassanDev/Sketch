@@ -1,6 +1,5 @@
-import styles from "./ColorPallete.module.css";
 import check from "@/assets/icons/check.svg";
-
+import styles from "./ColorPalette.module.css";
 type ColorPaletteProps = {
   colors: string[];
   selectedColor: string;
@@ -12,12 +11,13 @@ const ColorPalette = ({
   onClick,
 }: ColorPaletteProps) => {
   const colorList = colors.map((color, index) => {
+    const isSelected = selectedColor === color;
     return (
       <li key={index}>
         <button
           style={{ backgroundColor: color }}
           onClick={() => onClick(color)}
-          className={styles.colorButton}
+          className={`${styles.colorButton} ${isSelected && styles.active}`}
         >
           {
             selectedColor === color && (
@@ -34,7 +34,7 @@ const ColorPalette = ({
 
   return (
     <div className={styles.colorPalette}>
-      <ul>{colorList} </ul>
+      <ul className={styles.colorsList}>{colorList} </ul>
     </div>
   );
 };
