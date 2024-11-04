@@ -1,9 +1,14 @@
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), sentryVitePlugin({
+    org: "ali-q0c",
+    project: "sketch"
+  })],
+
   resolve: {
     alias: {
       "@/app": "/src/app",
@@ -14,4 +19,8 @@ export default defineConfig({
       "@/features": "/src/features"
     },
   },
+
+  build: {
+    sourcemap: true
+  }
 });
