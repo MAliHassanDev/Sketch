@@ -1,8 +1,8 @@
 
 .colorSelectionToolBar{
   position: absolute;
-  top: -250%;
-  right: -16.2rem;
+  top: -300%;
+  left: 4.2rem;
   padding: 1.4rem;
   background-color: var(--clr-tool-stack);
   border-radius: .4rem;

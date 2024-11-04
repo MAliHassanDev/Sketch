@@ -1,13 +1,16 @@
 import { MouseEvent, useContext, useEffect, useRef, useState } from "react";
 import styles from "./Canvas.module.css";
-import { getActiveTool, HandDrawTool } from "@/app/tools";
+import { HandDrawTool } from "@/app/tools";
+import { deactivateSubTools, getActiveTool } from "@/utils/canvasToolUtils";
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
 import ThemeContext, { ThemeContextType } from "@/contexts/themeContext";
 
 type MouseCords = [number, number];
 
 const Canvas = () => {
-  const { tools } = useContext(ToolsContext) as ToolsContextType;
+  const { tools, updateAllTools } = useContext(
+    ToolsContext
+  ) as ToolsContextType;
   const activeTool = getActiveTool(tools);
   const { theme } = useContext(ThemeContext) as ThemeContextType;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -61,12 +64,15 @@ const Canvas = () => {
   function handleMouseDown(e: MouseEvent<HTMLCanvasElement>) {
     setIsMouseDown(true);
     setStartMouseCords([e.clientX, e.clientY]);
+    const updatedTools =deactivateSubTools(tools);
+    updateAllTools(updatedTools);
   }
 
   function handleMouseUp(e: MouseEvent) {
     e.preventDefault();
     setIsMouseDown(false);
   }
+
 
   return (
     <>

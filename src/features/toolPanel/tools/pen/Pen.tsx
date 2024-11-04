@@ -8,20 +8,25 @@ import SubToolPanel from "../../components/subToolPanel/SubToolPanel";
 import styles from "./Pen.module.css";
 
 const Pen = () => {
-  const { tools, updateTools } = useContext(ToolsContext) as ToolsContextType;
+  const { tools, updateSingleTool } = useContext(
+    ToolsContext
+  ) as ToolsContextType;
   const pen = getToolByName("pen", tools) as IPen;
 
   function handlePresetChange(preset: IColorPreset) {
-    const { colorPalette } = preset;
+    const {
+      presetSelectionToolBar: { colorPalette, penSizeSlider },
+    } = preset;
     const updatedPenState: IPen = Object.assign({}, pen, {
       strokeStyle: colorPalette.selectedColor,
+      lineWidth: penSizeSlider.currPenSize,
       subTool: { colorPreset: preset },
-    });
-    updateTools(updatedPenState);
+    } as IPen);
+    updateSingleTool(updatedPenState);
   }
 
   function handleToolBtnClick() {
-    updateTools({ ...pen, ...{ active: true } });
+    updateSingleTool({ ...pen, ...{ active: true } });
   }
 
   return (

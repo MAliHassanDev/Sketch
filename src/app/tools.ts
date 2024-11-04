@@ -2,11 +2,11 @@
 type HandDrawToolName = "pen" | "eraser" | "highlighter";
 type SelectToolName = "select";
 type Cursor = string;
-type PrimitiveOrArray =
-  | string
-  | number
-  | boolean
-  | Array<string | number | boolean>;
+// type PrimitiveOrArray =
+//   | string
+//   | number
+//   | boolean
+//   | Array<string | number | boolean>;
 export type ToolIcon = {
   src: string;
   description: string;
@@ -17,6 +17,7 @@ export interface Tool {
   icon?: ToolIcon;
   active: boolean;
   cursor: Cursor;
+  subTool?:SubTool
 }
 
 export interface HandDrawTool extends Tool {
@@ -37,14 +38,23 @@ type subToolNames = "colorPreset";
 export interface IColorPalette {
   colors: string[];
   selectedColor: string;
-  thickness: number;
   active: boolean;
+}
+
+export interface IPenSizeSlider {
+  currPenSize: number;
+  maxPenSize: number;
+}
+
+export interface IPresetSelectionToolBar {
+  colorPalette: IColorPalette,
+  penSizeSlider: IPenSizeSlider,
 }
 export interface IColorPreset extends Tool {
   name: "colorPreset";
-  colorPalette: IColorPalette;
+  presetSelectionToolBar: IPresetSelectionToolBar 
 }
-export type subTool = IColorPreset;
+export type SubTool = PenSubTool;
 
 // Pen
 type PenSubTool = {
@@ -61,23 +71,8 @@ export interface IEraser extends HandDrawTool {
 
 export type CanvasTool = IPen | IEraser | SelectTool;
 export type CanvasToolName = HandDrawToolName | SelectToolName;
-//  util functions
-export function getTools(): Array<CanvasTool> {
-  const handDrawTools = createHandDrawTools();
-  const selectTolls = createSelectTools();
-  return [...selectTolls, ...handDrawTools];
-}
-
-export function getActiveTool(tools: CanvasTool[]) {
-  const activeTools = tools.filter((tool) => tool.active);
-  if (activeTools.length > 1) throw new Error("More than one tools are active");
-  if (activeTools.length === 0)
-    throw new Error("No Canvas tool is currently active");
-  return activeTools[0];
-}
-
 // tools config
-function createHandDrawTools() {
+export function createHandDrawTools() {
   const pen: IPen = {
     name: "pen",
     icon: {
@@ -91,24 +86,29 @@ function createHandDrawTools() {
         name: "colorPreset",
         active: false,
         cursor: "default",
-        colorPalette: {
-          active: false,
-          colors: [
-            "#1a1a1a",
-            "#fac710",
-            "#f24726",
-            "#e6e6e6",
-            "#cee741",
-            "#8fd14f",
-            "#da0063",
-            "#808080",
-            "#12cdd4",
-            "#0ca789",
-            "#9510ac",
-            "#2d9bf0",
-          ],
-          selectedColor: "#1a1a1a",
-          thickness: 5,
+        presetSelectionToolBar: {
+          colorPalette: {
+            active: false,
+            colors: [
+              "#1a1a1a",
+              "#fac710",
+              "#f24726",
+              "#e6e6e6",
+              "#cee741",
+              "#8fd14f",
+              "#da0063",
+              "#808080",
+              "#12cdd4",
+              "#0ca789",
+              "#9510ac",
+              "#2d9bf0",
+            ],
+            selectedColor: "#1a1a1a",
+          },
+          penSizeSlider: {
+            currPenSize: 5,
+            maxPenSize: 30,
+          },
         },
       },
     },
@@ -136,7 +136,7 @@ function createHandDrawTools() {
   return [pen, eraser];
 }
 
-function createSelectTools() {
+export function createSelectTools() {
   const select: SelectTool = {
     name: "select",
     icon: {
@@ -148,4 +148,9 @@ function createSelectTools() {
     cursor: "default",
   };
   return [select];
+}
+export function getTools(): Array<CanvasTool> {
+  const handDrawTools = createHandDrawTools();
+  const selectTolls = createSelectTools();
+  return [...selectTolls, ...handDrawTools];
 }

@@ -1,4 +1,4 @@
-import { CanvasTool, ToolIcon } from "@/app/tools";
+import {  ToolIcon } from "@/app/tools";
 import styles from "./ToolButton.module.css";
 import React from "react";
 

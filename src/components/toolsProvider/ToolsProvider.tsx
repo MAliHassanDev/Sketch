@@ -1,4 +1,5 @@
-import { CanvasTool, getTools } from "@/app/tools";
+import { CanvasTool } from "@/app/tools";
+import { getTools } from "@/app/tools";
 import ToolsStateContext from "@/contexts/toolsContext";
 import { useState, JSX } from "react";
 
@@ -9,7 +10,7 @@ const ToolsProvider = ({ children }: ToolsStateProviderProps) => {
   const baseTools = getTools();
   const [tools, setTools] = useState(baseTools);
 
-  function updateTools(updatedTool: CanvasTool) {
+  function updateSingleTool(updatedTool: CanvasTool) {
     const newToolsState = tools.map((tool) => {
       if (tool.name === updatedTool.name) return updatedTool;
       tool.active = false;
@@ -18,11 +19,15 @@ const ToolsProvider = ({ children }: ToolsStateProviderProps) => {
     setTools(newToolsState);
   }
 
+  function updateAllTools(updatedTools: CanvasTool[]){
+    setTools(updatedTools);
+  }
   return (
     <ToolsStateContext.Provider
       value={{
         tools,
-        updateTools,
+        updateSingleTool,
+        updateAllTools
       }}
     >
       {children}

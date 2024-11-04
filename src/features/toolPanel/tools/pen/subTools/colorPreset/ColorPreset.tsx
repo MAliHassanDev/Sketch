@@ -1,7 +1,11 @@
-import { IColorPalette, IColorPreset } from "@/app/tools";
+import {
+  IColorPalette,
+  IColorPreset,
+  IPresetSelectionToolBar,
+} from "@/app/tools";
 import PresetButton from "./components/presetButton/PresetButton";
 import styles from "./ColorPreset.module.css";
-import ColorSelectionToolBar from "./components/colorSelectionToolBar/ColorSelectionToolBar";
+import PresetSelectionToolBar from "./components/colorSelectionToolBar/ColorSelectionToolBar";
 
 type ColorPresetProps = {
   colorPreset: IColorPreset;
@@ -12,20 +16,25 @@ const ColorPreset = ({ onPresetChange, colorPreset }: ColorPresetProps) => {
     onPresetChange({ ...colorPreset, ...{ active: !colorPreset.active } });
   }
 
-  function handleColorPaletteChange(updatedPalette: IColorPalette) {
-    onPresetChange({ ...colorPreset, ...{ colorPalette: updatedPalette } } as IColorPreset);
+  function handlePresetSelectionChange(
+    updatedSelectionToolBar: IPresetSelectionToolBar
+  ) {
+    onPresetChange({
+      ...colorPreset,
+      presetSelectionToolBar: updatedSelectionToolBar,
+    });
   }
-  
+
   return (
     <div className={styles.colorPreset}>
       <PresetButton
-        bgColor={colorPreset.colorPalette.selectedColor}
+        bgColor={colorPreset.presetSelectionToolBar.colorPalette.selectedColor}
         onClick={handleToolBtnClick}
       />
       {colorPreset.active && (
-        <ColorSelectionToolBar
-          onColorPaletteChange={handleColorPaletteChange}
-          colorPalette={colorPreset.colorPalette}
+        <PresetSelectionToolBar
+          onPresetSelectionChange={handlePresetSelectionChange}
+          presetSelectionToolBar={colorPreset.presetSelectionToolBar}
         />
       )}
     </div>

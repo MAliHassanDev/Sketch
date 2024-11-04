@@ -4,11 +4,13 @@ import { useContext } from "react";
 import ToolButton from "../../components/toolButton/ToolButton";
 
 const Eraser = () => {
-  const { tools, updateTools } = useContext(ToolsContext) as ToolsContextType;
+  const { tools, updateSingleTool } = useContext(
+    ToolsContext
+  ) as ToolsContextType;
   const eraser = getToolByName("eraser", tools);
 
   function handleToolBtnClick() {
-    updateTools({ ...eraser, ...{ active: true } });
+    updateSingleTool({ ...eraser, ...{ active: true } });
   }
 
   return (

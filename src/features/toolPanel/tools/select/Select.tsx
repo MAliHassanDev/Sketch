@@ -4,7 +4,9 @@ import { useContext } from "react";
 import ToolButton from "../../components/toolButton/ToolButton";
 
 const Select = () => {
-  const { tools, updateTools } = useContext(ToolsContext) as ToolsContextType;
+  const { tools, updateSingleTool: updateTools } = useContext(
+    ToolsContext
+  ) as ToolsContextType;
 
   const select = getToolByName("select", tools);
 

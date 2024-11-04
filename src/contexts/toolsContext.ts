@@ -3,7 +3,8 @@ import { createContext } from "react";
 
 export type ToolsContextType = {
   tools: Array<CanvasTool>;
-  updateTools: (tool: CanvasTool) => void;
+  updateSingleTool: (tool: CanvasTool) => void;
+  updateAllTools: (tools: CanvasTool[]) => void;
 };
 
 const ToolsContext = createContext<ToolsContextType | null>(null);

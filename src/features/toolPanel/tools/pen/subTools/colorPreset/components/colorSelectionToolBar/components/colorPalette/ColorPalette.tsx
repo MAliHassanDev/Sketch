@@ -1,26 +1,31 @@
 import check from "@/assets/icons/check.svg";
 import styles from "./ColorPalette.module.css";
+import { IColorPalette } from "@/app/tools";
 type ColorPaletteProps = {
-  colors: string[];
-  selectedColor: string;
-  onClick: (selectedColor: string) => void;
+  colorPalette: IColorPalette,
+  onPaletteChange: (updatedPalette: IColorPalette) => void;
 };
 const ColorPalette = ({
-  colors,
-  selectedColor,
-  onClick,
+  colorPalette,
+  onPaletteChange,
 }: ColorPaletteProps) => {
-  const colorList = colors.map((color, index) => {
-    const isSelected = selectedColor === color;
+
+
+  function handleClick(color: string) {
+    onPaletteChange({ ...colorPalette, selectedColor: color });
+  }
+
+  const colorList = colorPalette.colors.map((color, index) => {
+    const isSelected = colorPalette.selectedColor === color;
     return (
       <li key={index}>
         <button
           style={{ backgroundColor: color }}
-          onClick={() => onClick(color)}
+          onClick={()=> handleClick(color)}
           className={`${styles.colorButton} ${isSelected && styles.active}`}
         >
           {
-            selectedColor === color && (
+            colorPalette.selectedColor === color && (
               <span>
                 <img src={check} alt="check mark" width={16} height={16} />
               </span>

@@ -1,5 +1,5 @@
 import ToolStack from "@/features/toolPanel/components/toolStack/ToolStack";
-import { ReactNode, useRef, JSX, useEffect } from 'react';
+import { ReactNode } from 'react';
 import styles from "./SubToolPanel.module.css";
 
 type subToolPanelProps = {
