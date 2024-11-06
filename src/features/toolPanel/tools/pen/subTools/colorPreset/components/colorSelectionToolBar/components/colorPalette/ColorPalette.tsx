@@ -1,6 +1,7 @@
 import check from "@/assets/icons/check.svg";
 import styles from "./ColorPalette.module.css";
 import { IColorPalette } from "@/app/tools";
+
 type ColorPaletteProps = {
   colorPalette: IColorPalette,
   onPaletteChange: (updatedPalette: IColorPalette) => void;
