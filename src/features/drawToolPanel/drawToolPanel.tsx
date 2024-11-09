@@ -1,10 +1,13 @@
 import ToolStack from "./components/toolStack/ToolStack";
 import Pen from "./tools/pen/Pen";
 import Eraser from "./tools/eraser/Eraser";
-import styles from "./ToolPanel.module.css";
 import Select from "./tools/select/Select";
+import styles from "./drawToolPanel.module.css";
 
-const ToolPanel = () => {
+
+
+
+const DrawToolPanel = () => {
   return (
     <div className={styles.toolPanel}>
       <ToolStack>
@@ -16,4 +19,4 @@ const ToolPanel = () => {
   );
 };
 
-export default ToolPanel;
+export default DrawToolPanel;

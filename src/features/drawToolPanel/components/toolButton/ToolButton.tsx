@@ -6,15 +6,17 @@ interface ToolButtonProps {
   onClick: () => void;
   icon: ToolIcon | undefined;
   isActive: boolean;
+  isDisabled?: boolean;
   extraStyles?: React.CSSProperties;
 }
 
-function ToolButton({ icon, onClick, isActive,extraStyles }: ToolButtonProps) {
+function ToolButton({ icon,isDisabled, onClick, isActive,extraStyles }: ToolButtonProps) {
   return (
     <button
       className={`${styles.toolButton} ${isActive && styles.active}`}
       onClick={onClick}
       style={extraStyles}
+      disabled={!!isDisabled}
     >
       {icon && (
         <span className={styles.imageContainer}>

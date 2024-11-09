@@ -1,5 +1,4 @@
 import {
-  IColorPalette,
   IColorPreset,
   IPresetSelectionToolBar,
 } from "@/app/tools";

@@ -6,7 +6,6 @@ import {
 import styles from "./ColorSelectionToolBar.module.css";
 import ColorPalette from "./components/colorPalette/ColorPalette";
 import PenSizeSlider from "./components/penSizeSlider/PenSizeSlider";
-import { useEffect, useRef } from "react";
 
 type PresetSelectionToolBar = {
   presetSelectionToolBar: IPresetSelectionToolBar;

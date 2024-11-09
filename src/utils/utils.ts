@@ -8,3 +8,11 @@ export function createMapFromArray<T extends BaseObject>(key: keyof T, array: T[
     map.set(value[key], value);
   });
 }
+
+
+export function removeLastArrayElement<T>(array: Array<T>) {
+  return array.filter((_, index) => index !== array.length-1);
+}
+
+
+

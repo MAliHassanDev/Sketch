@@ -20,10 +20,12 @@ export interface Tool {
   subTool?:SubTool
 }
 
+export type LineCap = "round" | "butt" | "square";
+
 export interface HandDrawTool extends Tool {
   name: HandDrawToolName;
   category: "handDraw";
-  lineCap: "round" | "butt" | "square";
+  lineCap: LineCap;
   lineWidth: number;
   strokeStyle: string;
 }
@@ -76,7 +78,7 @@ export function createHandDrawTools() {
   const pen: IPen = {
     name: "pen",
     icon: {
-      src: "/src/assets/icons/pencil.svg",
+      src: "/icons/pencil.svg",
       description: "pen",
     },
     category: "handDraw",
@@ -121,10 +123,10 @@ export function createHandDrawTools() {
   const eraser: IEraser = {
     name: "eraser",
     icon: {
-      src: "/src/assets/icons/e.svg",
+      src: "/icons/e.svg",
       description: "eraser",
     },
-    cursor: `url("src/assets/icons/eraserCursor.png"),default`,
+    cursor: `url("/icons/eraserCursor.png"),default`,
     category: "handDraw",
     active: false,
     lineWidth: 20,
@@ -140,7 +142,7 @@ export function createSelectTools() {
   const select: SelectTool = {
     name: "select",
     icon: {
-      src: "/src/assets/icons/cursor.svg",
+      src: "/icons/cursor.svg",
       description: "select",
     },
     category: "select",
