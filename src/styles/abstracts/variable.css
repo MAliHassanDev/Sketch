@@ -4,6 +4,9 @@
   --clr-tool-button-hover: rgb(217, 223, 252);
   --clr-tool-stack: #ffffff;
   --clr-tool-border-primary: #3859FF;
+  
+  /* z index */
+  --z-index-cursor: 1;
 
 
   /* box shadows */

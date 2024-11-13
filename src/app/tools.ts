@@ -1,7 +1,10 @@
 // Tools
-type HandDrawToolName = "pen" | "eraser" | "highlighter";
-type SelectToolName = "select";
-type Cursor = string;
+type ToolName = "pen" | "eraser" | "highlighter" | "select";
+export type Cursor = {
+  type: "crosshair" | "default" | "pointer" | "none",
+  width?: number,
+  height?: number,
+};
 // type PrimitiveOrArray =
 //   | string
 //   | number
@@ -12,31 +15,36 @@ export type ToolIcon = {
   description: string;
 };
 
+export type SubTool = PenSubTool;
+
 export interface Tool {
-  name: SelectToolName | HandDrawToolName | subToolNames;
+  name: ToolName;
   icon?: ToolIcon;
   active: boolean;
   cursor: Cursor;
-  subTool?:SubTool
+  subTool?: SubTool;
 }
 
-export type LineCap = "round" | "butt" | "square";
+//  --------------- Tools ------------------ >
 
-export interface HandDrawTool extends Tool {
-  name: HandDrawToolName;
-  category: "handDraw";
+// Select
+export interface SelectTool extends Tool {
+  name: "select";
+}
+
+// Pen
+export interface IPen extends Tool {
+  name: "pen";
   lineCap: LineCap;
   lineWidth: number;
   strokeStyle: string;
+  subTool: PenSubTool;
 }
+type PenSubTool = {
+  colorPreset: IColorPreset;
+};
+export type LineCap = "round" | "butt" | "square";
 
-export interface SelectTool extends Tool {
-  category: "select";
-  name: SelectToolName;
-}
-
-// subTool
-type subToolNames = "colorPreset";
 export interface IColorPalette {
   colors: string[];
   selectedColor: string;
@@ -49,31 +57,27 @@ export interface IPenSizeSlider {
 }
 
 export interface IPresetSelectionToolBar {
-  colorPalette: IColorPalette,
-  penSizeSlider: IPenSizeSlider,
+  colorPalette: IColorPalette;
+  penSizeSlider: IPenSizeSlider;
 }
-export interface IColorPreset extends Tool {
-  name: "colorPreset";
-  presetSelectionToolBar: IPresetSelectionToolBar 
-}
-export type SubTool = PenSubTool;
-
-// Pen
-type PenSubTool = {
-  colorPreset: IColorPreset;
-};
-export interface IPen extends HandDrawTool {
-  subTool: PenSubTool;
+export interface IColorPreset extends Omit<Tool, "name"> {
+  presetSelectionToolBar: IPresetSelectionToolBar;
 }
 
 // eraser
-export interface IEraser extends HandDrawTool {
+export interface IEraser extends Tool {
+  name: "eraser";
+  lineCap: LineCap;
+  lineWidth: number;
+  strokeStyle: string;
   radius: number;
 }
 
 export type CanvasTool = IPen | IEraser | SelectTool;
-export type CanvasToolName = HandDrawToolName | SelectToolName;
-// tools config
+export type HandDrawTool = IPen | IEraser;
+export type CanvasToolName = ToolName;
+
+// --------------------- Tools Config ----------------------->
 export function createHandDrawTools() {
   const pen: IPen = {
     name: "pen",
@@ -81,13 +85,13 @@ export function createHandDrawTools() {
       src: "/icons/pencil.svg",
       description: "pen",
     },
-    category: "handDraw",
     active: true,
     subTool: {
       colorPreset: {
-        name: "colorPreset",
         active: false,
-        cursor: "default",
+        cursor: {
+          type: "default"
+        },
         presetSelectionToolBar: {
           colorPalette: {
             active: false,
@@ -117,7 +121,9 @@ export function createHandDrawTools() {
     lineWidth: 5,
     lineCap: "round",
     strokeStyle: "black",
-    cursor: "crosshair",
+    cursor: {
+      type:"crosshair"
+    },
   };
 
   const eraser: IEraser = {
@@ -126,8 +132,12 @@ export function createHandDrawTools() {
       src: "/icons/e.svg",
       description: "eraser",
     },
-    cursor: `url("/icons/eraserCursor.png"),default`,
-    category: "handDraw",
+    // cursor: `url("/icons/eraserCursor.png"),default`,
+    cursor: {
+      type: "none",
+      width: 20,
+      height: 20
+    },
     active: false,
     lineWidth: 20,
     lineCap: "round",
@@ -145,9 +155,10 @@ export function createSelectTools() {
       src: "/icons/cursor.svg",
       description: "select",
     },
-    category: "select",
     active: false,
-    cursor: "default",
+    cursor: {
+      type: "default"
+    },
   };
   return [select];
 }

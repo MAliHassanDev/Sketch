@@ -1,5 +1,6 @@
 .toolPanel{
   position: absolute;
+  z-index: calc(var(--z-index-cursor) + 10);
   top: 50%;
   transform: translateY(-50%);
   left: var(--tool-panel-gap);

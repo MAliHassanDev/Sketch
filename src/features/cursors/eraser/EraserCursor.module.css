@@ -1,0 +1,30 @@
+
+
+
+.eraserCursor{
+  --border-width: 2px;
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  outline: var(--border-width) dashed  var(--clr-text-primary);
+  border-radius: 50%;
+  background-color: transparent;
+  display: none;
+  cursor: none;
+  &.active{
+    display: block;
+  }
+
+  &::before{
+    position: absolute;
+    width: calc(100% + 1px);;
+    pointer-events: none;
+    height: calc(100% + 1px);
+    top: 0;
+    left: 0;
+    content: "";
+    background-color: transparent;
+    border: var(--border-width) dashed var(--clr-bg-canvas-primary);
+    border-radius: 50%;
+  }
+}
