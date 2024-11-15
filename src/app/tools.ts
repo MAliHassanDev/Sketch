@@ -1,9 +1,7 @@
 // Tools
 type ToolName = "pen" | "eraser" | "highlighter" | "select";
 export type Cursor = {
-  type: "crosshair" | "default" | "pointer" | "none",
-  width?: number,
-  height?: number,
+  type: "crosshair" | "default" | "pointer" | "none";
 };
 // type PrimitiveOrArray =
 //   | string
@@ -65,8 +63,15 @@ export interface IColorPreset extends Omit<Tool, "name"> {
 }
 
 // eraser
+export interface IEraserCursor extends Cursor {
+  width: number;
+  height: number;
+  minSize: number;
+  maxSize: number;
+}
 export interface IEraser extends Tool {
   name: "eraser";
+  cursor: IEraserCursor;
   lineCap: LineCap;
   lineWidth: number;
   strokeStyle: string;
@@ -86,11 +91,17 @@ export function createHandDrawTools() {
       description: "pen",
     },
     active: true,
+    lineWidth: 5,
+    lineCap: "round",
+    strokeStyle: "black",
+    cursor: {
+      type: "pointer",
+    },
     subTool: {
       colorPreset: {
         active: false,
         cursor: {
-          type: "default"
+          type: "default",
         },
         presetSelectionToolBar: {
           colorPalette: {
@@ -118,12 +129,6 @@ export function createHandDrawTools() {
         },
       },
     },
-    lineWidth: 5,
-    lineCap: "round",
-    strokeStyle: "black",
-    cursor: {
-      type:"crosshair"
-    },
   };
 
   const eraser: IEraser = {
@@ -132,11 +137,12 @@ export function createHandDrawTools() {
       src: "/icons/e.svg",
       description: "eraser",
     },
-    // cursor: `url("/icons/eraserCursor.png"),default`,
     cursor: {
       type: "none",
       width: 20,
-      height: 20
+      height: 20,
+      minSize: 20,
+      maxSize: 100,
     },
     active: false,
     lineWidth: 20,
@@ -157,7 +163,7 @@ export function createSelectTools() {
     },
     active: false,
     cursor: {
-      type: "default"
+      type: "default",
     },
   };
   return [select];

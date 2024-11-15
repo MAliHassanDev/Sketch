@@ -4,27 +4,33 @@
 .eraserCursor{
   --border-width: 2px;
   position: absolute;
+  top: 50%;
+  left: 1%;
+  transform: translateY(-50%);
   width: 2rem;
   height: 2rem;
-  outline: var(--border-width) dashed  var(--clr-text-primary);
+  outline: var(--border-width) solid  var(--clr-text-primary);
   border-radius: 50%;
   background-color: transparent;
   display: none;
   cursor: none;
+  pointer-events: none;
   &.active{
     display: block;
   }
 
   &::before{
     position: absolute;
-    width: calc(100% + 1px);;
+    width: calc(100% - 1px);;
     pointer-events: none;
-    height: calc(100% + 1px);
-    top: 0;
-    left: 0;
+    height: calc(100% - 1px );
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     content: "";
     background-color: transparent;
-    border: var(--border-width) dashed var(--clr-bg-canvas-primary);
+    outline: 1px solid var(--clr-bg-canvas-primary);
+    /* box-shadow: 0px 0px 0px 1px white; */
     border-radius: 50%;
   }
 }
