@@ -23,6 +23,12 @@ export interface Tool {
   subTool?: SubTool;
 }
 
+interface HandDraw extends Tool{
+  lineCap: CanvasLineCap;
+  lineWidth: number;
+  strokeStyle: string;
+  lineJoin: CanvasLineJoin
+}
 //  --------------- Tools ------------------ >
 
 // Select
@@ -31,11 +37,8 @@ export interface SelectTool extends Tool {
 }
 
 // Pen
-export interface IPen extends Tool {
+export interface IPen extends HandDraw {
   name: "pen";
-  lineCap: LineCap;
-  lineWidth: number;
-  strokeStyle: string;
   subTool: PenSubTool;
 }
 type PenSubTool = {
@@ -69,12 +72,9 @@ export interface IEraserCursor extends Cursor {
   minSize: number;
   maxSize: number;
 }
-export interface IEraser extends Tool {
+export interface IEraser extends HandDraw {
   name: "eraser";
   cursor: IEraserCursor;
-  lineCap: LineCap;
-  lineWidth: number;
-  strokeStyle: string;
   radius: number;
 }
 
@@ -93,6 +93,7 @@ export function createHandDrawTools() {
     active: true,
     lineWidth: 5,
     lineCap: "round",
+    lineJoin: "round",
     strokeStyle: "black",
     cursor: {
       type: "pointer",
@@ -147,6 +148,7 @@ export function createHandDrawTools() {
     active: false,
     lineWidth: 20,
     lineCap: "round",
+    lineJoin: "round",
     strokeStyle: "#F2F2F2",
     radius: 1,
   };

@@ -43,6 +43,7 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
     ctx.moveTo(cords.x, cords.y);
     ctx.strokeStyle = tool.strokeStyle;
     ctx.lineCap = tool.lineCap;
+    ctx.lineJoin = tool.lineJoin;
     ctx.lineWidth = tool.lineWidth;
   }
 
