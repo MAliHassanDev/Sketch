@@ -11,6 +11,10 @@ type ColorPresetProps = {
   onPresetChange: (preset: IColorPreset) => void;
 };
 const ColorPreset = ({ onPresetChange, colorPreset }: ColorPresetProps) => {
+
+  const {currPenSize,maxPenSize} = colorPreset.presetSelectionToolBar.penSizeSlider;
+  const penSizePercentage = Math.floor((currPenSize/maxPenSize) * 100);
+
   function handleToolBtnClick() {
     onPresetChange({ ...colorPreset, ...{ active: !colorPreset.active } });
   }
@@ -27,6 +31,7 @@ const ColorPreset = ({ onPresetChange, colorPreset }: ColorPresetProps) => {
   return (
     <div className={styles.colorPreset}>
       <PresetButton
+        penSizePercentage={penSizePercentage}
         bgColor={colorPreset.presetSelectionToolBar.colorPalette.selectedColor}
         onClick={handleToolBtnClick}
       />
