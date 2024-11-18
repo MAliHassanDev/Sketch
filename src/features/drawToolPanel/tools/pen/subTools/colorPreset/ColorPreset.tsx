@@ -16,7 +16,9 @@ const ColorPreset = ({ onPresetChange, colorPreset }: ColorPresetProps) => {
   const penSizePercentage = Math.floor((currPenSize/maxPenSize) * 100);
 
   function handleToolBtnClick() {
-    onPresetChange({ ...colorPreset, ...{ active: !colorPreset.active } });
+    const updatedPreset = Object.assign({}, colorPreset);
+    updatedPreset.presetSelectionToolBar.colorPalette.active = !updatedPreset.presetSelectionToolBar.colorPalette.active;
+    onPresetChange(updatedPreset);
   }
 
   function handlePresetSelectionChange(
@@ -35,7 +37,7 @@ const ColorPreset = ({ onPresetChange, colorPreset }: ColorPresetProps) => {
         bgColor={colorPreset.presetSelectionToolBar.colorPalette.selectedColor}
         onClick={handleToolBtnClick}
       />
-      {colorPreset.active && (
+      {colorPreset.presetSelectionToolBar.colorPalette.active && (
         <PresetSelectionToolBar
           onPresetSelectionChange={handlePresetSelectionChange}
           presetSelectionToolBar={colorPreset.presetSelectionToolBar}

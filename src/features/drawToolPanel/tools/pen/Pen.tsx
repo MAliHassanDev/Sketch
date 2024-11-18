@@ -8,7 +8,7 @@ import SubToolPanel from "../../components/subToolPanel/SubToolPanel";
 import styles from "./Pen.module.css";
 
 const Pen = () => {
-  const { tools, updateSingleTool } = useContext(
+  const { tools, updateSingleToolStatus } = useContext(
     ToolsContext
   ) as ToolsContextType;
   const pen = getToolByName("pen", tools) as IPen;
@@ -22,11 +22,16 @@ const Pen = () => {
       lineWidth: penSizeSlider.currPenSize,
       subTool: { colorPreset: preset },
     } as IPen);
-    updateSingleTool(updatedPenState);
+    updateSingleToolStatus(updatedPenState);
   }
 
   function handleToolBtnClick() {
-    updateSingleTool({ ...pen, ...{ active: true } });
+    const updatedPen = Object.assign({}, pen);
+    updatedPen.active = true;
+    updatedPen.subTool.colorPreset.active =
+      !updatedPen.subTool.colorPreset.active;
+    updatedPen.subTool.colorPreset.presetSelectionToolBar.colorPalette.active = false;
+    updateSingleToolStatus(updatedPen);
   }
 
   return (
@@ -37,7 +42,7 @@ const Pen = () => {
         isActive={pen.active}
       />
 
-      {pen.active && (
+      {pen.subTool.colorPreset.active && (
         <SubToolPanel>
           <ColorPreset
             colorPreset={pen.subTool.colorPreset}

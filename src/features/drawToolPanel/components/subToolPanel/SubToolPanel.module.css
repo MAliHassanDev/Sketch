@@ -3,5 +3,8 @@
 .subToolPanel{
   position: absolute;
   top: 0;
-  right:calc((-100% - 1rem));
+  right: calc(-1 * (var(--tool-button-width ) + 1.2rem));
+  /* mobile */
+  /* right: 0;
+  top: calc((-100% - .8rem)); */
 }

@@ -1,10 +1,14 @@
 
 .colorSelectionToolBar{
   position: absolute;
-  top: -300%;
-  left: 4.2rem;
+  top: -10rem;
+  left: calc(var(--tool-button-width) + .4rem) ;
   padding: 1.4rem;
   background-color: var(--clr-tool-stack);
   border-radius: .4rem;
   box-shadow: -5px 5px 10px 0px rgba(5,0,56,0.08);  
+  /* mobile */
+  /* top: -860%;
+  left: 0;
+  transform: translateX(-50%); */
 }

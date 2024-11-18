@@ -10,7 +10,7 @@ const ToolsProvider = ({ children }: ToolsStateProviderProps) => {
   const baseTools = getTools();
   const [tools, setTools] = useState(baseTools);
 
-  function updateSingleTool(updatedTool: CanvasTool) {
+  function updateSingleToolStatus(updatedTool: CanvasTool) {
     const newToolsState = tools.map((tool) => {
       if (tool.name === updatedTool.name) return updatedTool;
       tool.active = false;
@@ -26,7 +26,7 @@ const ToolsProvider = ({ children }: ToolsStateProviderProps) => {
     <ToolsStateContext.Provider
       value={{
         tools,
-        updateSingleTool,
+        updateSingleToolStatus,
         updateAllTools
       }}
     >

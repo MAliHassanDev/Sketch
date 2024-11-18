@@ -10,7 +10,7 @@ import { MouseCords } from "@/features/canvas/Canvas";
 import { IEraserCursor, IEraser } from "@/app/tools";
 
 const EraserCursor = () => {
-  const { tools, updateSingleTool } = useContext(
+  const { tools, updateSingleToolStatus  } = useContext(
     ToolsContext
   ) as ToolsContextType;
   const eraser = getToolByName("eraser", tools) as IEraser;
@@ -20,7 +20,6 @@ const EraserCursor = () => {
   function handleMouseMove(e: globalThis.MouseEvent) {
     if (!eraserCursorRef.current || !eraser.active) return;
     const eraserElement = eraserCursorRef.current;
-    console.log(isMouseDown);
     const eraserCursorRadius = (eraser.cursor.width || 20) / 2;
     eraserElement.style.left = `${e.clientX - eraserCursorRadius}px`;
     eraserElement.style.top = `${e.clientY}px`;
@@ -55,7 +54,7 @@ const EraserCursor = () => {
       cursor: updatedCursor,
     };
     if (updatedEraser.lineWidth !== eraser.lineWidth) {
-      updateSingleTool(updatedEraser);
+      updateSingleToolStatus(updatedEraser);
     }
   }
 
@@ -76,7 +75,6 @@ const EraserCursor = () => {
       capture: true,
     });
     return () => {
-      console.log("Use affect being Cleaned");
       document.removeEventListener("mousemove", handleMouseMove, {
         capture: true,
       });

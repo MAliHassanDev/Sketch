@@ -7,4 +7,10 @@
     padding-bottom: .4rem;
   }
   
+  /* mobile */
+  /* display: flex;
+  gap: 0.4rem;
+  & > *:not(:last-child){
+    padding-bottom: 0;
+  } */
 }

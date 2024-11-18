@@ -12,6 +12,8 @@
   /* box shadows */
   --box-shadow-tool-stack: 0px 2px 10px rgba(5, 0, 56, 0.08);  
 
+  /* width */
+  --tool-button-width: 4rem;
   --tool-panel-gap: 0.8rem;
 }
 

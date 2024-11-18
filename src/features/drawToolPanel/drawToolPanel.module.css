@@ -4,4 +4,7 @@
   top: 50%;
   transform: translateY(-50%);
   left: var(--tool-panel-gap);
+
+  /* mobile
+  bottom: var(--tool-panel-gap); */
 }

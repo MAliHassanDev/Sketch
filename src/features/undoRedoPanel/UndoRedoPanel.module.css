@@ -4,7 +4,8 @@
 
 .undoRedoPanel{
   position: absolute;
-  top: 57.4%;
+  top: calc(50% + 11.8rem);
+  transform: translateY(-50%);
   left: var(--tool-panel-gap);
   z-index: calc(var(--z-index-cursor) + 10);
 
