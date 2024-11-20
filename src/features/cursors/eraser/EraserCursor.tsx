@@ -61,12 +61,12 @@ const EraserCursor = () => {
     }
   }
 
-  function handleMouseUp(e: MouseEvent | TouchEvent) {
+  function handleMouseUp() {
     resetEraserCursorState();
     setIsMouseDown(false);
   }
 
-  function handleMouseDown(e: MouseEvent | TouchEvent) {
+  function handleMouseDown() {
     setIsMouseDown(true);
   }
 
