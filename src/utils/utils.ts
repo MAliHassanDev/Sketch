@@ -17,4 +17,10 @@ export function removeLastArrayElement<T>(array: Array<T>) {
 
 
 
-
+export function getEventCords(e: MouseEvent | TouchEvent|React.MouseEvent|React.TouchEvent) {
+  const cords =
+      "touches" in e
+        ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
+        : { x: e.clientX, y: e.clientY };
+  return cords;
+}

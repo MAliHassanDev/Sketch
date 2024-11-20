@@ -1,36 +1,39 @@
-
-
-
-.eraserCursor{
+.eraserCursor {
   --border-width: 2px;
   position: absolute;
-  top: 50%;
-  left: 1%;
+
   transform: translateY(-50%);
   width: 2rem;
+  top: auto;
+  bottom: var(--tool-panel-gap);
   height: 2rem;
-  outline: var(--border-width) solid  var(--clr-text-primary);
+  outline: var(--border-width) solid var(--clr-text-primary);
   border-radius: 50%;
   background-color: transparent;
   display: none;
   cursor: none;
   pointer-events: none;
-  &.active{
+  &.active {
     display: block;
   }
 
-  &::before{
+  &::before {
     position: absolute;
-    width: calc(100% - 1px);;
+    width: calc(100% - 1px);
     pointer-events: none;
-    height: calc(100% - 1px );
+    height: calc(100% - 1px);
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     content: "";
     background-color: transparent;
     outline: 1px solid var(--clr-bg-canvas-primary);
     /* box-shadow: 0px 0px 0px 1px white; */
     border-radius: 50%;
+  }
+
+  @media screen and (min-width: 642px) {
+    top: 50%;
+    left: 1%;
   }
 }

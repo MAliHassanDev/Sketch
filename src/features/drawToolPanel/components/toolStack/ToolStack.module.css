@@ -1,16 +1,19 @@
-.toolStack{
-  padding: .4rem;
+.toolStack {
+  padding: 0.4rem;
   background-color: var(--clr-tool-stack);
-  border-radius: .4rem; 
-  box-shadow: var(--box-shadow-tool-stack);  
-  & > *:not(:last-child){
-    padding-bottom: .4rem;
-  }
-  
-  /* mobile */
-  /* display: flex;
+  border-radius: 0.4rem;
+  box-shadow: var(--box-shadow-tool-stack);
+  display: flex;
   gap: 0.4rem;
-  & > *:not(:last-child){
+  & > *:not(:last-child) {
     padding-bottom: 0;
-  } */
+  }
+
+  @media screen and (min-width: 642px) {
+    & > *:not(:last-child) {
+      padding-bottom: 0.4rem;
+    }
+    display: block;
+    width: fit-content;
+  }
 }

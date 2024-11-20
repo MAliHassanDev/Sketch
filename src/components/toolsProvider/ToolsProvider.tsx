@@ -3,6 +3,7 @@ import { getTools } from "@/app/tools";
 import ToolsStateContext from "@/contexts/toolsContext";
 import { useState, JSX } from "react";
 
+// TODO move the update tools logic in single function
 type ToolsStateProviderProps = {
   children: JSX.Element[] | JSX.Element;
 };
@@ -19,7 +20,7 @@ const ToolsProvider = ({ children }: ToolsStateProviderProps) => {
     setTools(newToolsState);
   }
 
-  function updateAllTools(updatedTools: CanvasTool[]){
+  function updateAllToolsStatus(updatedTools: CanvasTool[]) {
     setTools(updatedTools);
   }
   return (
@@ -27,7 +28,7 @@ const ToolsProvider = ({ children }: ToolsStateProviderProps) => {
       value={{
         tools,
         updateSingleToolStatus,
-        updateAllTools
+        updateAllToolsStatus,
       }}
     >
       {children}

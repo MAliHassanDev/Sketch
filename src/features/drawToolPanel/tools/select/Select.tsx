@@ -4,14 +4,14 @@ import { useContext } from "react";
 import ToolButton from "../../components/toolButton/ToolButton";
 
 const Select = () => {
-  const { tools, updateSingleTool: updateTools } = useContext(
+  const { tools, updateSingleToolStatus } = useContext(
     ToolsContext
   ) as ToolsContextType;
 
   const select = getToolByName("select", tools);
 
   function handleToolBtnClick() {
-    updateTools({ ...select, ...{ active: true } });
+    updateSingleToolStatus({ ...select, ...{ active: true } });
   }
   return (
     <ToolButton

@@ -1,10 +1,13 @@
 .toolPanel{
   position: absolute;
   z-index: calc(var(--z-index-cursor) + 10);
-  top: 50%;
-  transform: translateY(-50%);
-  left: var(--tool-panel-gap);
+  /* mobile */
+  bottom: var(--tool-panel-gap);
 
-  /* mobile
-  bottom: var(--tool-panel-gap); */
+  @media screen and (min-width: 642px){
+    top: 50%; 
+    bottom: auto;
+    transform: translateY(-50%);
+    left: var(--tool-panel-gap);  
+  }
 }

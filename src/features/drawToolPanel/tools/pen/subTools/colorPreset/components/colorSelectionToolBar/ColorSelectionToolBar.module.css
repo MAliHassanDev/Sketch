@@ -1,14 +1,20 @@
 
 .colorSelectionToolBar{
+  --toolBarSize: 24rem;
   position: absolute;
-  top: -10rem;
-  left: calc(var(--tool-button-width) + .4rem) ;
   padding: 1.4rem;
   background-color: var(--clr-tool-stack);
   border-radius: .4rem;
   box-shadow: -5px 5px 10px 0px rgba(5,0,56,0.08);  
+  /* top: calc(-1 * var(--tool-button-width) * 6 - 1rem); */
+  top: calc( -24rem + -1rem + -.2rem);
+  left: 50%;
+  transform: translateX(-50%);
+  
+  @media screen and (min-width: 642px){
+    top: -10rem;
+    left: calc(var(--tool-button-width) + .4rem) ;
+    transform: translateX(0);
+  }
   /* mobile */
-  /* top: -860%;
-  left: 0;
-  transform: translateX(-50%); */
 }

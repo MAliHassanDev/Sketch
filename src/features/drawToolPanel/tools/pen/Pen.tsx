@@ -42,7 +42,7 @@ const Pen = () => {
         isActive={pen.active}
       />
 
-      {pen.subTool.colorPreset.active && (
+      {pen.active && pen.subTool.colorPreset.active && (
         <SubToolPanel>
           <ColorPreset
             colorPreset={pen.subTool.colorPreset}

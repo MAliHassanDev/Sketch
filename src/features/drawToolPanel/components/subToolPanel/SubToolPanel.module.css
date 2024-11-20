@@ -1,10 +1,10 @@
-
-
-.subToolPanel{
+.subToolPanel {
   position: absolute;
-  top: 0;
-  right: calc(-1 * (var(--tool-button-width ) + 1.2rem));
   /* mobile */
-  /* right: 0;
-  top: calc((-100% - .8rem)); */
+  right: 0;
+  top: calc((-100% - 1rem));
+  @media screen and (min-width: 642px) {
+    top: 0;
+    right: calc(-1 * (var(--tool-button-width) + 1.2rem));
+  }
 }

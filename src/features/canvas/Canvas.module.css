@@ -2,6 +2,7 @@
 .canvas{
   background-color: var(--clr-bg-canvas-primary);
   color: var(--clr-text-primary);
-  /* cursor: pointer; */
-  /* cursor: none; */
+  position: fixed;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
 }

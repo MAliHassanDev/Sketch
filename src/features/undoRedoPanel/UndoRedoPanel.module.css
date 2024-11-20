@@ -4,9 +4,15 @@
 
 .undoRedoPanel{
   position: absolute;
-  top: calc(50% + 11.8rem);
-  transform: translateY(-50%);
-  left: var(--tool-panel-gap);
   z-index: calc(var(--z-index-cursor) + 10);
+  top: var(--tool-panel-gap);
+  right: 1rem;
+  width: fit-content;
+
+  @media screen and (min-width: 642px){
+    top: calc(50% + 11.8rem);
+    transform: translateY(-50%);
+    left: var(--tool-panel-gap);  
+  }
 
 }
