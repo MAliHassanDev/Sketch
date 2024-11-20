@@ -1,9 +1,17 @@
-import { MouseEvent, useContext, useEffect, useRef, useState } from "react";
+import {
+  MouseEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  TouchEvent,
+} from "react";
 import styles from "./Canvas.module.css";
 import { HandDrawTool, IEraser, LineCap } from "@/app/tools";
 import { deactivateSubTools, getActiveTool } from "@/utils/canvasToolUtils";
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
 import ThemeContext, { ThemeContextType } from "@/contexts/themeContext";
+import { getEventCords } from "@/utils/utils";
 
 export type MouseCords = {
   x: number;
@@ -26,7 +34,7 @@ type CanvasProps = {
 };
 
 const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
-  const { tools, updateAllTools } = useContext(
+  const { tools, updateSingleToolStatus } = useContext(
     ToolsContext
   ) as ToolsContextType;
   const activeTool = getActiveTool(tools);
@@ -35,6 +43,7 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [currentPath, setCurrentPath] = useState<Path | null>(null);
+  
 
   function setupHandDrawTool(tool: HandDrawTool, cords: MouseCords) {
     const ctx = contextRef.current;
@@ -47,9 +56,11 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
     ctx.lineWidth = tool.lineWidth;
   }
 
-  function handleMouseMove(e: MouseEvent<HTMLCanvasElement>) {
-    const currCords = { x: e.clientX, y: e.clientY };
+  function handleMouseMove(e: MouseEvent | TouchEvent) {
+    e.preventDefault();
+    const currCords = getEventCords(e);
     if (!isDrawing) return;
+
     const ctx = contextRef.current as CanvasRenderingContext2D;
     updateCurrentPath(currCords);
     switch (activeTool.name) {
@@ -87,23 +98,24 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
     });
   }
 
-  function handleMouseDown(e: MouseEvent<HTMLCanvasElement>) {
+  function handleMouseDown(e: MouseEvent | TouchEvent) {
+    e.preventDefault();
     e.stopPropagation();
     setIsDrawing(true);
-    const updatedTools = deactivateSubTools(tools);
-    updateAllTools(updatedTools);
-    const startCords = { x: e.clientX, y: e.clientY };
+    const updatedTool = deactivateSubTools(activeTool);
+    updateSingleToolStatus(updatedTool);
+    const startCords = getEventCords(e);
     switch (activeTool.name) {
       case "pen":
       case "eraser":
         setupHandDrawTool(activeTool, startCords);
         // move out the create path call create separate variable;
-        setCurrentPath(createPath(startCords, [startCords], activeTool)); 
+        setCurrentPath(createPath(startCords, [startCords], activeTool));
         break;
     }
   }
 
-  function handleMouseUp(e: MouseEvent) {
+  function handleMouseUp(e: MouseEvent|TouchEvent) {
     e.preventDefault();
     e.stopPropagation();
     setIsDrawing(false);
@@ -156,6 +168,9 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
       <canvas
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
+        onTouchMove={handleMouseMove}
+        onTouchStart={handleMouseDown}
+        onTouchEnd={handleMouseUp}
         onMouseMove={handleMouseMove}
         className={`${styles.canvas} ${theme}`}
         height={window.innerHeight}
@@ -163,12 +178,10 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
         ref={canvasRef}
         id='canvas'
         data-testid='canvas'
-        style={{ cursor: activeTool.cursor.type}}
+        style={{ cursor: activeTool.cursor.type }}
       ></canvas>
     </>
   );
 };
 
 export default Canvas;
-
-// TODO Change to Eraser Cursor and add Feature to increase size based on mouse movement speed
