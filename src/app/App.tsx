@@ -7,9 +7,12 @@ import DrawToolPanel from "@/features/drawToolPanel/drawToolPanel";
 import UndoRedoPanel from "@/features/undoRedoPanel/UndoRedoPanel";
 import { removeLastArrayElement } from "@/utils/utils";
 import EraserCursor from "@/features/cursors/eraser/EraserCursor";
+import SwitchTheme from "@/features/switchTheme/switchTheme";
+import { getCanvasThemeColors, getToolByName, inversePenColor } from "@/utils/canvasToolUtils";
+import { IPen } from "./tools";
 
 const App = () => {
-  const { theme } = useContext(ThemeContext) as ThemeContextType;
+  const { theme,toggleTheme,setTheme } = useContext(ThemeContext) as ThemeContextType;
   const [undoStack, setUndoStack] = useState<Path[] | []>([]);
   const [redoStack, setRedoStack] = useState<Path[] | []>([]);
   const [redrawCanvas, setRedrawCanvas] = useState<boolean>(false);
@@ -36,9 +39,24 @@ const App = () => {
     setRedrawCanvas(true);
   }
 
-  // TODO move both tool panels inside single component
+  function handleThemeSwitch() {
+    toggleTheme();  
+    const {dark,light } = getCanvasThemeColors();
+    const updatedUndoStack = undoStack.map(path => {
+      if (path.strokeStyle == dark) {
+        path.strokeStyle = light;
+      } else if (path.strokeStyle === light) {
+        path.strokeStyle = dark;
+      }
+      return path;
+    });
+    setUndoStack(updatedUndoStack);
+    setRedrawCanvas(true);
+  }
+
   return (
     <div className={`${styles.app} ${theme}`} data-testid='app'>
+      <SwitchTheme theme={theme} onClick={handleThemeSwitch} />
       <ToolsProvider>
         <Canvas
           onNewPath={addNewPath}

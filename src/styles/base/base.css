@@ -2,6 +2,7 @@ body{
   height: 100vh;
   height: 100svh;
   overscroll-behavior: none;
+  margin: 0;
   overflow: hidden;
 }
 

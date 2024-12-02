@@ -108,10 +108,10 @@ export function createHandDrawTools() {
           colorPalette: {
             active: false,
             colors: [
-              "#1a1a1a",
+              "#121212",
               "#fac710",
               "#f24726",
-              "#e6e6e6",
+              "#F2F2F2",
               "#cee741",
               "#8fd14f",
               "#da0063",

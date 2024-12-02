@@ -8,10 +8,10 @@ import {
 } from "react";
 import styles from "./Canvas.module.css";
 import { HandDrawTool, IEraser, LineCap } from "@/app/tools";
-import { deactivateSubTools, getActiveTool } from "@/utils/canvasToolUtils";
+import { activateSingleTool, deactivateSubTools, getActiveTool } from "@/utils/canvasToolUtils";
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
 import ThemeContext, { ThemeContextType } from "@/contexts/themeContext";
-import { getEventCords } from "@/utils/utils";
+import { getEventCords, isMouseEvent } from "@/utils/utils";
 
 export type MouseCords = {
   x: number;
@@ -34,7 +34,7 @@ type CanvasProps = {
 };
 
 const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
-  const { tools, updateSingleToolStatus } = useContext(
+  const { tools, updateToolsStatus } = useContext(
     ToolsContext
   ) as ToolsContextType;
   const activeTool = getActiveTool(tools);
@@ -57,7 +57,7 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
   }
 
   function handleMouseMove(e: MouseEvent | TouchEvent) {
-    e.preventDefault();
+    if (isMouseEvent(e)) e.preventDefault(); 
     const currCords = getEventCords(e);
     if (!isDrawing) return;
 
@@ -99,11 +99,13 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
   }
 
   function handleMouseDown(e: MouseEvent | TouchEvent) {
-    e.preventDefault();
-    e.stopPropagation();
+    if (isMouseEvent(e)) {
+      e.stopPropagation();
+      e.preventDefault();
+    };
     setIsDrawing(true);
-    const updatedTool = deactivateSubTools(activeTool);
-    updateSingleToolStatus(updatedTool);
+    const updatedTool = deactivateSubTools(getActiveTool(tools));
+    updateToolsStatus(activateSingleTool(updatedTool,tools));
     const startCords = getEventCords(e);
     switch (activeTool.name) {
       case "pen":

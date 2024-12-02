@@ -16,9 +16,12 @@
     transform: scale(1.1);
     box-shadow: 0px 0px 10px 2px rgb(0, 0, 0,0.08);
   }
+
+  & img {
+    filter: var(--filter-color-button-check);
+  }
 }
 
-/* TODO dynamically set right position using ClientRect(by adding element width and .8rem gap */
 .colorPalette{
   & .colorsList{
     display: grid;

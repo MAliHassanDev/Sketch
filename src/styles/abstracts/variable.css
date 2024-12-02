@@ -1,7 +1,6 @@
 :root{
   --clr-bg-canvas-primary: #F2F2F2;
-  --clr-text-primary: black;
-  --clr-tool-button-hover: rgb(217, 223, 252);
+  --clr-text-primary: #1a1a1a;
   --clr-tool-stack: #ffffff;
   --clr-tool-border-primary: #3859FF;
   
@@ -14,6 +13,7 @@
 
   /* width */
   --tool-button-width: 4rem;
+  --tool-button-height: 4rem;
   --tool-panel-gap: 0.8rem;
 
   /*  screens */
@@ -24,12 +24,25 @@
 
 .light{
   --clr-bg-canvas-primary: #F2F2F2;
-  --clr-text-primary: black;
+  --clr-text-primary: #1a1a1a;
+  --clr-tool-stack: #ffffff;  
+  --filter-tool-image: none;
+  --clr-tool-button-hover: rgb(217, 223, 252);
+  --filter-tool-image-hover: invert(26%) sepia(46%) saturate(4136%) hue-rotate(226deg)
+  brightness(103%) contrast(101%);
+  --filter-color-button-check: none;
+
 }
 
 .dark{
-  --clr-bg-canvas-primary: #333;
+  --clr-tool-button-hover: #3f3f67;
+  --clr-bg-canvas-primary: #121212;
   --clr-text-primary: #F2F2F2;
+  --clr-tool-stack: #232329;
+  --filter-tool-image: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(3011%) hue-rotate(72deg) brightness(91%) contrast(98%);
+  --filter-tool-image-hover: brightness(0) saturate(100%) invert(88%) sepia(11%) saturate(1079%) hue-rotate(195deg) brightness(102%) contrast(98%);
+  --filter-color-button-check: brightness(0) saturate(100%) invert(2%) sepia(1%) saturate(685%) hue-rotate(315deg) brightness(92%) contrast(89%);
+  --box-shadow-tool-stack: 0px 0px .9310142993927002px 0px rgba(0, 0, 0, .17), 0px 0px 3.1270833015441895px 0px rgba(0, 0, 0, .08), 0px 7px 14px 0px rgba(0, 0, 0, .05);
 }
 
 

@@ -1,17 +1,17 @@
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
-import { getToolByName } from "@/utils/canvasToolUtils";
+import { activateSingleTool, getToolByName } from "@/utils/canvasToolUtils";
 import { useContext } from "react";
 import ToolButton from "../../components/toolButton/ToolButton";
 
 const Select = () => {
-  const { tools, updateSingleToolStatus } = useContext(
+  const { tools, updateToolsStatus } = useContext(
     ToolsContext
   ) as ToolsContextType;
 
   const select = getToolByName("select", tools);
 
   function handleToolBtnClick() {
-    updateSingleToolStatus({ ...select, ...{ active: true } });
+    updateToolsStatus(activateSingleTool(select,tools));
   }
   return (
     <ToolButton

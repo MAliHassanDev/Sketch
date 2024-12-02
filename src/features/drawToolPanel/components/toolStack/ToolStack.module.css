@@ -4,6 +4,7 @@
   border-radius: 0.4rem;
   box-shadow: var(--box-shadow-tool-stack);
   display: flex;
+  /* background-color: #232329; */
   gap: 0.4rem;
   & > *:not(:last-child) {
     padding-bottom: 0;

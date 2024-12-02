@@ -1,0 +1,32 @@
+.switchThemeButton {
+  position: absolute;
+  z-index: calc(var(--z-index-cursor) + 1);
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  background-color: var(--clr-tool-stack);
+  box-shadow: var(--box-shadow-tool-stack);
+  border: none;
+  left: var(--tool-panel-gap);
+  top: var(--tool-panel-gap);
+  cursor: pointer;
+  width: var(--tool-button-width);
+  height: var(--tool-button-height);
+  place-content: center;
+
+  /* border: 1px solid var(--clr-text-primary); */
+
+  & span {
+    display: inline-block;
+  }
+
+  & img {
+    width: max(3rem, 1vw);
+    height: max(3rem, 1vw);
+  }
+  
+  @media screen and (min-width: 642px) {
+    left: auto;
+    top: 2rem;
+    right: 2rem;
+  }
+}

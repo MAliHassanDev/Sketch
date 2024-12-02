@@ -1,7 +1,7 @@
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
 import styles from "./EraserCursor.module.css";
 import { useContext, useEffect, useRef, useState } from "react";
-import { getToolByName } from "@/utils/canvasToolUtils";
+import { activateSingleTool, getToolByName } from "@/utils/canvasToolUtils";
 import {
   calculateEraserMovement,
   resetEraserCursorState,
@@ -10,10 +10,8 @@ import { MouseCords } from "@/features/canvas/Canvas";
 import { IEraserCursor, IEraser } from "@/app/tools";
 import { getEventCords } from "@/utils/utils";
 
-
-
 const EraserCursor = () => {
-  const { tools, updateSingleToolStatus } = useContext(
+  const { tools, updateToolsStatus } = useContext(
     ToolsContext
   ) as ToolsContextType;
   const eraser = getToolByName("eraser", tools) as IEraser;
@@ -57,7 +55,7 @@ const EraserCursor = () => {
       cursor: updatedCursor,
     };
     if (updatedEraser.lineWidth !== eraser.lineWidth) {
-      updateSingleToolStatus(updatedEraser);
+      updateToolsStatus(activateSingleTool(updatedEraser, tools));
     }
   }
 
@@ -77,9 +75,9 @@ const EraserCursor = () => {
     document.addEventListener("mousedown", handleMouseDown, {
       capture: true,
     });
-    document.addEventListener("touchmove", handleMouseMove, { capture: true, });
-    document.addEventListener("touchstart", handleMouseDown, { capture: true, });
-    document.addEventListener("touchend", handleMouseUp,{capture: true,});
+    document.addEventListener("touchmove", handleMouseMove, { capture: true });
+    document.addEventListener("touchstart", handleMouseDown, { capture: true });
+    document.addEventListener("touchend", handleMouseUp, { capture: true });
     return () => {
       document.removeEventListener("mousemove", handleMouseMove, {
         capture: true,

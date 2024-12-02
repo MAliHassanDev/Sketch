@@ -22,6 +22,7 @@
     width: 100%;
     height: 100%;
     object-fit: 100% 100%;
+    filter: var(--filter-tool-image);
   }
 
   &:disabled{
@@ -32,8 +33,7 @@
   &.active {
     background-color: var(--clr-tool-button-hover);
     & img {
-      filter: invert(26%) sepia(46%) saturate(4136%) hue-rotate(226deg)
-        brightness(103%) contrast(101%);
+      filter: var(--filter-tool-image-hover);
     }
   }
 }

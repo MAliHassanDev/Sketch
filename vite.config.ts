@@ -6,7 +6,8 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react(), sentryVitePlugin({
     org: "ali-q0c",
-    project: "sketch"
+    project: "sketch",
+    telemetry: false,
   })],
 
   resolve: {
