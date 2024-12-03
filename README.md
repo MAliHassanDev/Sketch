@@ -1,6 +1,6 @@
 # Whiteboard: A Minimalist Drawing App
 
-**Whiteboard** is a responsive drawing application built using the **Canvas native API**.
+**Whiteboard** is a responsive drawing application built using the **Canvas native API** in **React**.
 
 ## [Live Preview](https://easywhiteboard.netlify.app/)
 ![Whiteboard app demo video](/public/whiteBoardDempImage.png)
@@ -22,6 +22,8 @@ Whiteboard is optimized for all device sizes, ensuring seamless use across deskt
 ## Purpose
 This project was developed with the following goals:
 1. **Learning the Canvas Native API**: Gaining hands-on experience to understand its features and capabilities.
+2. **Learning React**: Using this project as a foundation to transition into learning and applying React for modern web applications.  
+
 
 ## Upcoming Features
 I have planned to add these features in feature updates:
