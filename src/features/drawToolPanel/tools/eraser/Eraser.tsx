@@ -1,5 +1,5 @@
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
-import { activateSingleTool, getCanvasColorInverse, getCanvasThemeColors, getToolByName } from "@/utils/canvasToolUtils";
+import { activateSingleTool, getCanvasThemeColors, getToolByName } from "@/utils/canvasToolUtils";
 import { useContext, useEffect } from "react";
 import ToolButton from "../../components/toolButton/ToolButton";
 import ThemeContext, { ThemeContextType } from "@/contexts/themeContext";

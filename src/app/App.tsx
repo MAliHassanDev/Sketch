@@ -8,11 +8,10 @@ import UndoRedoPanel from "@/features/undoRedoPanel/UndoRedoPanel";
 import { removeLastArrayElement } from "@/utils/utils";
 import EraserCursor from "@/features/cursors/eraser/EraserCursor";
 import SwitchTheme from "@/features/switchTheme/switchTheme";
-import { getCanvasThemeColors, getToolByName, inversePenColor } from "@/utils/canvasToolUtils";
-import { IPen } from "./tools";
+import { getCanvasThemeColors, } from "@/utils/canvasToolUtils";
 
 const App = () => {
-  const { theme,toggleTheme,setTheme } = useContext(ThemeContext) as ThemeContextType;
+  const { theme,toggleTheme } = useContext(ThemeContext) as ThemeContextType;
   const [undoStack, setUndoStack] = useState<Path[] | []>([]);
   const [redoStack, setRedoStack] = useState<Path[] | []>([]);
   const [redrawCanvas, setRedrawCanvas] = useState<boolean>(false);
