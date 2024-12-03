@@ -47,3 +47,21 @@ Follow these steps to run Whiteboard locally:
 ```bash
     npm run dev
 ```
+## Contributing
+If you'd like to work on upcoming features, follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-name`).
+3. Make your changes and commit them (`git commit -am 'Add new feature'`).
+4. Push to your branch (`git push origin feature-name`).
+5. Create a pull request.
+
+Please ensure your code adheres to the existing coding standards and includes tests where applicable.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🧭 Navigation
+- My next project [Microservices Backend](https://github.com/MAliHassanDev/microservices-ecommerce)
+- My previous project [Nexus Ecommerce Store](https://github.com/MAliHassanDev/ecommerceStore)
