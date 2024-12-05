@@ -26,7 +26,7 @@ This project was developed with the following goals:
 
 
 ## Upcoming Features
-I have planned to add these features in feature updates:
+I have planned to add these features in future updates:
 - **Shape Tools**: Easily draw predefined shapes like circles, rectangles, and lines.
 - **Save and Export**: Enable users to save their creations as image files for offline use.
 - **Layer Management**:  Introduce layers to organize and edit drawings more effectively.
