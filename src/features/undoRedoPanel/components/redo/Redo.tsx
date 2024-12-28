@@ -6,6 +6,7 @@ type RedoProps = {
   onClick: () => void;
   isDisabled: boolean;
 };
+
 const Redo = ({ onClick, isDisabled }: RedoProps) => {
   const redoIcon: ToolIcon = {
     src: redo,

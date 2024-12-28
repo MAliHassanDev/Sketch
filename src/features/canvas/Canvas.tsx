@@ -8,7 +8,11 @@ import {
 } from "react";
 import styles from "./Canvas.module.css";
 import { HandDrawTool, IEraser, LineCap } from "@/app/tools";
-import { activateSingleTool, deactivateSubTools, getActiveTool } from "@/utils/canvasToolUtils";
+import {
+  activateSingleTool,
+  deactivateSubTools,
+  getActiveTool,
+} from "@/utils/canvasToolUtils";
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
 import ThemeContext, { ThemeContextType } from "@/contexts/themeContext";
 import { getEventCords, isMouseEvent } from "@/utils/utils";
@@ -18,9 +22,14 @@ export type MouseCords = {
   y: number;
 };
 
+type PathState = {
+  cords: MouseCords;
+  lineWidth: number;
+};
+
 export type Path = {
   startCords: MouseCords;
-  currCords: MouseCords[];
+  state: PathState[];
   strokeStyle: string;
   lineWidth: number;
   lineCap: LineCap;
@@ -29,7 +38,6 @@ export type Path = {
 type CanvasProps = {
   onNewPath: (path: Path) => void;
   paths: Path[];
-
   redraw: boolean;
 };
 
@@ -43,7 +51,6 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [currentPath, setCurrentPath] = useState<Path | null>(null);
-  
 
   function setupHandDrawTool(tool: HandDrawTool, cords: MouseCords) {
     const ctx = contextRef.current;
@@ -57,12 +64,17 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
   }
 
   function handleMouseMove(e: MouseEvent | TouchEvent) {
-    if (isMouseEvent(e)) e.preventDefault(); 
+    if (isMouseEvent(e)) e.preventDefault();
+    if (!isDrawing || activeTool.name == "select") return;
     const currCords = getEventCords(e);
-    if (!isDrawing) return;
 
     const ctx = contextRef.current as CanvasRenderingContext2D;
-    updateCurrentPath(currCords);
+
+    updateCurrentPathState({
+      cords: currCords,
+      lineWidth: activeTool.lineWidth,
+    });
+
     switch (activeTool.name) {
       case "pen":
         drawPath(ctx, currCords);
@@ -90,11 +102,11 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
     ctx.stroke();
   }
 
-  function updateCurrentPath(currentCords: MouseCords) {
+  function updateCurrentPathState(currentState: PathState) {
     if (!currentPath) return;
     setCurrentPath({
       ...currentPath,
-      currCords: [...currentPath.currCords, currentCords],
+      state: [...currentPath.state, currentState],
     });
   }
 
@@ -102,22 +114,22 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
     if (isMouseEvent(e)) {
       e.stopPropagation();
       e.preventDefault();
-    };
+    }
+    if (activeTool.name == "select") return;
+
     setIsDrawing(true);
     const updatedTool = deactivateSubTools(getActiveTool(tools));
-    updateToolsStatus(activateSingleTool(updatedTool,tools));
+    updateToolsStatus(activateSingleTool(updatedTool, tools));
     const startCords = getEventCords(e);
-    switch (activeTool.name) {
-      case "pen":
-      case "eraser":
-        setupHandDrawTool(activeTool, startCords);
-        // move out the create path call create separate variable;
-        setCurrentPath(createPath(startCords, [startCords], activeTool));
-        break;
-    }
+    const currentPathState = {
+      cords: startCords,
+      lineWidth: activeTool.lineWidth,
+    };
+    setupHandDrawTool(activeTool, startCords);
+    setCurrentPath(createPath(startCords, [currentPathState], activeTool));
   }
 
-  function handleMouseUp(e: MouseEvent|TouchEvent) {
+  function handleMouseUp(e: MouseEvent | TouchEvent) {
     e.preventDefault();
     e.stopPropagation();
     setIsDrawing(false);
@@ -127,12 +139,12 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
 
   function createPath(
     startCords: MouseCords,
-    currCords: MouseCords[],
+    state: PathState[],
     tool: HandDrawTool
   ): Path {
     return {
       startCords,
-      currCords,
+      state,
       strokeStyle: tool.strokeStyle,
       lineWidth: tool.lineWidth,
       lineCap: tool.lineCap,
@@ -148,8 +160,9 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
       ctx.strokeStyle = path.strokeStyle;
       ctx.lineCap = path.lineCap;
       ctx.lineWidth = path.lineWidth;
-      path.currCords.forEach((cord) => {
-        ctx.lineTo(cord.x, cord.y);
+      path.state.forEach(({ cords, lineWidth }) => {
+        ctx.lineWidth = lineWidth;
+        ctx.lineTo(cords.x, cords.y);
         ctx.stroke();
       });
     });
