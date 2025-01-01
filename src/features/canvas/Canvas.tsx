@@ -7,7 +7,6 @@ import {
   TouchEvent,
 } from "react";
 import styles from "./Canvas.module.css";
-import { HandDrawTool, IEraser, LineCap } from "@/app/tools";
 import {
   activateSingleTool,
   deactivateSubTools,
@@ -16,23 +15,19 @@ import {
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
 import ThemeContext, { ThemeContextType } from "@/contexts/themeContext";
 import { getEventCords, isMouseEvent } from "@/utils/utils";
+import {
+  beginPath,
+  createPathObject,
+  drawPathAtCurrentMouseCords,
+  erasePath,
+  Path,
+  PathState,
+  redrawPaths,
+} from "./canvasPath";
 
 export type MouseCords = {
   x: number;
   y: number;
-};
-
-type PathState = {
-  cords: MouseCords;
-  lineWidth: number;
-};
-
-export type Path = {
-  startCords: MouseCords;
-  state: PathState[];
-  strokeStyle: string;
-  lineWidth: number;
-  lineCap: LineCap;
 };
 
 type CanvasProps = {
@@ -52,17 +47,6 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [currentPath, setCurrentPath] = useState<Path | null>(null);
 
-  function setupHandDrawTool(tool: HandDrawTool, cords: MouseCords) {
-    const ctx = contextRef.current;
-    if (!ctx) throw new Error("Canvas rendering context is undefined");
-    ctx.beginPath();
-    ctx.moveTo(cords.x, cords.y);
-    ctx.strokeStyle = tool.strokeStyle;
-    ctx.lineCap = tool.lineCap;
-    ctx.lineJoin = tool.lineJoin;
-    ctx.lineWidth = tool.lineWidth;
-  }
-
   function handleMouseMove(e: MouseEvent | TouchEvent) {
     if (isMouseEvent(e)) e.preventDefault();
     if (!isDrawing || activeTool.name == "select") return;
@@ -77,29 +61,11 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
 
     switch (activeTool.name) {
       case "pen":
-        drawPath(ctx, currCords);
+        drawPathAtCurrentMouseCords(ctx, currCords);
         break;
       case "eraser":
         erasePath(ctx, currCords, activeTool);
     }
-  }
-
-  function erasePath(
-    ctx: CanvasRenderingContext2D,
-    currentCords: MouseCords,
-    eraser: IEraser
-  ) {
-    const x = currentCords.x;
-    const y = currentCords.y;
-    ctx.lineWidth = eraser.lineWidth;
-    ctx.lineTo(x, y);
-    ctx.stroke();
-  }
-
-  function drawPath(ctx: CanvasRenderingContext2D, currentCords: MouseCords) {
-    const { x, y } = currentCords;
-    ctx.lineTo(x, y);
-    ctx.stroke();
   }
 
   function updateCurrentPathState(currentState: PathState) {
@@ -125,8 +91,14 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
       cords: startCords,
       lineWidth: activeTool.lineWidth,
     };
-    setupHandDrawTool(activeTool, startCords);
-    setCurrentPath(createPath(startCords, [currentPathState], activeTool));
+    beginPath(
+      activeTool,
+      startCords,
+      contextRef.current as CanvasRenderingContext2D
+    );
+    setCurrentPath(
+      createPathObject(startCords, [currentPathState], activeTool)
+    );
   }
 
   function handleMouseUp(e: MouseEvent | TouchEvent) {
@@ -137,37 +109,6 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
     if (currentPath) onNewPath(currentPath);
   }
 
-  function createPath(
-    startCords: MouseCords,
-    state: PathState[],
-    tool: HandDrawTool
-  ): Path {
-    return {
-      startCords,
-      state,
-      strokeStyle: tool.strokeStyle,
-      lineWidth: tool.lineWidth,
-      lineCap: tool.lineCap,
-    };
-  }
-
-  function redrawCanvas(paths: Path[]) {
-    const ctx = contextRef.current as CanvasRenderingContext2D;
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    paths.forEach((path) => {
-      ctx.beginPath();
-      ctx.moveTo(path.startCords.x, path.startCords.y);
-      ctx.strokeStyle = path.strokeStyle;
-      ctx.lineCap = path.lineCap;
-      ctx.lineWidth = path.lineWidth;
-      path.state.forEach(({ cords, lineWidth }) => {
-        ctx.lineWidth = lineWidth;
-        ctx.lineTo(cords.x, cords.y);
-        ctx.stroke();
-      });
-    });
-  }
-
   useEffect(() => {
     if (!canvasRef.current) {
       throw new Error("Html canvas is undefined");
@@ -175,7 +116,7 @@ const Canvas = ({ onNewPath, paths, redraw }: CanvasProps) => {
     const canvas = canvasRef.current;
     contextRef.current = canvas.getContext("2d");
     if (!redraw) return;
-    redrawCanvas(paths);
+    redrawPaths(paths, contextRef.current as CanvasRenderingContext2D);
   }, [paths, redraw]);
 
   return (

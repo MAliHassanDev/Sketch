@@ -1,6 +1,7 @@
 import styles from "./App.module.css";
 import { useContext, useState } from "react";
-import Canvas, { Path } from "@/features/canvas/Canvas";
+import Canvas from "@/features/canvas/Canvas";
+import { Path } from "@/features/canvas/canvasPath";
 import ToolsProvider from "@/components/toolsProvider/ToolsProvider";
 import ThemeContext, { ThemeContextType } from "@/contexts/themeContext";
 import DrawToolPanel from "@/features/drawToolPanel/drawToolPanel";
