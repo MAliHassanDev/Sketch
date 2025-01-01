@@ -1,6 +1,6 @@
 import ToolsContext, { ToolsContextType } from "@/contexts/toolsContext";
 import styles from "./EraserCursor.module.css";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { activateSingleTool, getToolByName } from "@/utils/canvasToolUtils";
 import {
   calculateEraserMovement,
@@ -18,58 +18,43 @@ const EraserCursor = () => {
   const eraserCursorRef = useRef<HTMLDivElement | null>(null);
   const [isMouseDown, setIsMouseDown] = useState<boolean>(false);
 
-  function handleMouseMove(e: globalThis.MouseEvent | TouchEvent) {
-    if (!eraserCursorRef.current || !eraser.active) return;
-    const eraserElement = eraserCursorRef.current;
-    const eraserCursorRadius = (eraser.cursor.width || 20) / 2;
-    const cords = getEventCords(e);
-    eraserElement.style.left = `${cords.x - eraserCursorRadius}px`;
-    eraserElement.style.top = `${cords.y}px`;
-    if (!isMouseDown) return;
-    increaseCursorSize(cords, eraserElement);
-  }
+  const handleMouseMove = useCallback(
+    (e: globalThis.MouseEvent | TouchEvent) => {
+      if (!eraserCursorRef.current || !eraser.active) return;
+      const eraserElement = eraserCursorRef.current;
+      const eraserCursorRadius = (eraser.cursor.width || 20) / 2;
+      const cords = getEventCords(e);
+      eraserElement.style.left = `${cords.x - eraserCursorRadius}px`;
+      eraserElement.style.top = `${cords.y}px`;
+      if (!isMouseDown) return;
+      const updatedCursor = increaseCursorSize(
+        eraser.cursor,
+        cords,
+        eraserElement
+      );
+      // update eraser tool to match this size of eraser cursor
+      if (updatedCursor.width !== eraser.lineWidth) {
+        const updatedEraser: IEraser = {
+          ...eraser,
+          lineWidth: updatedCursor.width,
+          cursor: updatedCursor,
+        };
+        updateToolsStatus(activateSingleTool(updatedEraser, tools));
+      }
+    },
+    [eraser, isMouseDown, tools, updateToolsStatus]
+  );
 
-  function increaseCursorSize(cords: MouseCords, eraserElement: HTMLElement) {
-    const { maxSize, minSize } = eraser.cursor;
-    const movement = calculateEraserMovement(cords);
-
-    const increasedSize =
-      movement > minSize * 2 // movement should be at least twice the size of cursor
-        ? Math.min(maxSize, movement)
-        : minSize;
-
-    if (!isMouseDown) return;
-
-    eraserElement.style.width = `${increasedSize}px`;
-    eraserElement.style.height = `${increasedSize}px`;
-
-    const updatedCursor: IEraserCursor = {
-      ...eraser.cursor,
-      width: increasedSize,
-      height: increasedSize,
-    };
-
-    const updatedEraser: IEraser = {
-      ...eraser,
-      lineWidth: increasedSize,
-      cursor: updatedCursor,
-    };
-    if (updatedEraser.lineWidth !== eraser.lineWidth) {
-      updateToolsStatus(activateSingleTool(updatedEraser, tools));
-    }
-  }
-
-  function handleMouseUp() {
+  const handleMouseUp = useCallback(() => {
     resetEraserCursorState();
     setIsMouseDown(false);
-  }
+  }, []);
 
-  function handleMouseDown() {
+  const handleMouseDown = useCallback(() => {
     setIsMouseDown(true);
-  }
+  }, []);
 
-  useEffect(() => {
-    if (!eraser.active) return;
+  const addEventListeners = useCallback(() => {
     document.addEventListener("mousemove", handleMouseMove, { capture: true });
     document.addEventListener("mouseup", handleMouseUp, { capture: true });
     document.addEventListener("mousedown", handleMouseDown, {
@@ -78,25 +63,32 @@ const EraserCursor = () => {
     document.addEventListener("touchmove", handleMouseMove, { capture: true });
     document.addEventListener("touchstart", handleMouseDown, { capture: true });
     document.addEventListener("touchend", handleMouseUp, { capture: true });
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove, {
-        capture: true,
-      });
-      document.removeEventListener("mouseup", handleMouseUp, { capture: true });
-      document.removeEventListener("mousedown", handleMouseDown, {
-        capture: true,
-      });
-      document.removeEventListener("touchmove", handleMouseMove, {
-        capture: true,
-      });
-      document.removeEventListener("touchstart", handleMouseDown, {
-        capture: true,
-      });
-      document.removeEventListener("touchend", handleMouseUp, {
-        capture: true,
-      });
-    };
-  }, [eraser, isMouseDown]);
+  }, [handleMouseDown, handleMouseMove, handleMouseUp]);
+
+  const removeEventListeners = useCallback(() => {
+    document.removeEventListener("mousemove", handleMouseMove, {
+      capture: true,
+    });
+    document.removeEventListener("mouseup", handleMouseUp, { capture: true });
+    document.removeEventListener("mousedown", handleMouseDown, {
+      capture: true,
+    });
+    document.removeEventListener("touchmove", handleMouseMove, {
+      capture: true,
+    });
+    document.removeEventListener("touchstart", handleMouseDown, {
+      capture: true,
+    });
+    document.removeEventListener("touchend", handleMouseUp, {
+      capture: true,
+    });
+  }, [handleMouseDown, handleMouseMove, handleMouseUp]);
+
+  useEffect(() => {
+    if (!eraser.active) return;
+    addEventListeners();
+    return removeEventListeners;
+  }, [eraser, addEventListeners, removeEventListeners]);
 
   return (
     <div
@@ -105,5 +97,30 @@ const EraserCursor = () => {
     ></div>
   );
 };
+
+function increaseCursorSize(
+  cursor: IEraserCursor,
+  cords: MouseCords,
+  eraserElement: HTMLElement
+) {
+  const { maxSize, minSize } = cursor;
+  const movement = calculateEraserMovement(cords);
+
+  const increasedSize =
+    movement > minSize * 2 // movement should be at least twice the size of cursor
+      ? Math.min(maxSize, movement)
+      : minSize;
+
+  eraserElement.style.width = `${increasedSize}px`;
+  eraserElement.style.height = `${increasedSize}px`;
+
+  const updatedCursor: IEraserCursor = {
+    ...cursor,
+    width: increasedSize,
+    height: increasedSize,
+  };
+
+  return updatedCursor;
+}
 
 export default EraserCursor;
